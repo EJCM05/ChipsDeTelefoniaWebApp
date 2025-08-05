@@ -1,0 +1,59 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 Edg/137.0.0.0" version="28.0.4">
+  <diagram name="Página-1" id="iMwqVORg6S1l6qpXz36q">
+    <mxGraphModel dx="2200" dy="807" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="LRzMJlyDuLPTHoYJMiWl-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.615;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="LRzMJlyDuLPTHoYJMiWl-2" target="LRzMJlyDuLPTHoYJMiWl-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="LRzMJlyDuLPTHoYJMiWl-2" value="Clientes" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry y="460" width="240" height="270" as="geometry" />
+        </mxCell>
+        <mxCell id="LRzMJlyDuLPTHoYJMiWl-3" value="+ID_Cliente : PK&lt;div&gt;+Primer_Nombre:&amp;nbsp;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Chartfield(15)&lt;/span&gt;&lt;/div&gt;&lt;div&gt;+Segundo_Nombre:&amp;nbsp;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Chartfield(15)&lt;/span&gt;&lt;/div&gt;&lt;div&gt;+Primer_Apellido:&amp;nbsp;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Chartfield(15)&lt;/span&gt;&lt;/div&gt;&lt;div&gt;+Segundo_Apellido: Chartfield(15)&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;+Numero_Identificacion: Charfield(25)&lt;/span&gt;&lt;/div&gt;&lt;div&gt;+Fecha_Nacimiento: Date&lt;/div&gt;&lt;div&gt;+Telefono: charfileld(35)&lt;/div&gt;&lt;div&gt;+Correo: EmailDate&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;+is_active&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;+create_at&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;+update_at&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;+I&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;D_Usuario_Propietario: FK(Usuarios)&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" vertex="1" parent="LRzMJlyDuLPTHoYJMiWl-2">
+          <mxGeometry y="50" width="240" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="LRzMJlyDuLPTHoYJMiWl-4" value="Usuarios / DjangoAuth" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="320" y="100" width="260" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="LRzMJlyDuLPTHoYJMiWl-5" value="&lt;div&gt;+ID_Usuario: PK&lt;/div&gt;+Usuario&lt;br&gt;+Password&lt;div&gt;+Email&lt;br&gt;+FirstName&lt;div&gt;+LastName&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;+ rol: CharField(max_length=20, choices=[(&#39;admin&#39;, &#39;Administrador&#39;), (&#39;supervisor&#39;, &#39;Supervisor&#39;)], default=&#39;supervisor&#39;)&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" vertex="1" parent="LRzMJlyDuLPTHoYJMiWl-4">
+          <mxGeometry y="50" width="260" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="LRzMJlyDuLPTHoYJMiWl-9" value="Lotes" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-20" y="220" width="200" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="LRzMJlyDuLPTHoYJMiWl-10" value="+ID_Lotes: PK&lt;div&gt;+MaxSimCard: INT(default=50)&lt;br&gt;&lt;div&gt;+NombreLote: CharField(20)&lt;/div&gt;&lt;div&gt;+FechaCreacion: Date&lt;/div&gt;&lt;div&gt;&lt;div&gt;+ID_Usuario_Propietario: FK&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" vertex="1" parent="LRzMJlyDuLPTHoYJMiWl-9">
+          <mxGeometry y="50" width="200" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="LRzMJlyDuLPTHoYJMiWl-11" value="SimCards" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="430" width="260" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="LRzMJlyDuLPTHoYJMiWl-12" value="+ID_SimCard:PK&lt;br&gt;+Codigo: CharField(30)&lt;div&gt;+ID_Cliente: FK&lt;/div&gt;&lt;div&gt;+ID_Lote: FK&lt;/div&gt;&lt;div&gt;+Estado: Select(activo, inactivo, pendiente de activación, desactivada, perdida, robada&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;)&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;+Numero_Telefono: CharField(25)&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;+is_active&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;+create_at&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;+update_at&lt;/span&gt;&lt;/div&gt;&lt;div&gt;+iD_operadora: FK&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" vertex="1" parent="LRzMJlyDuLPTHoYJMiWl-11">
+          <mxGeometry y="50" width="260" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="LRzMJlyDuLPTHoYJMiWl-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0.013;entryY=0.084;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="LRzMJlyDuLPTHoYJMiWl-10" target="LRzMJlyDuLPTHoYJMiWl-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="LRzMJlyDuLPTHoYJMiWl-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="LRzMJlyDuLPTHoYJMiWl-12" target="LRzMJlyDuLPTHoYJMiWl-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="LRzMJlyDuLPTHoYJMiWl-15" value="Operadora" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=35;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="680" y="385" width="250" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="LRzMJlyDuLPTHoYJMiWl-16" value="+ID_Operadora: PK&lt;br&gt;+Nombre: CharField(20)&lt;br&gt;+CodigoPais:CharField(5)&lt;div&gt;+CrateAt&lt;/div&gt;&lt;div&gt;+UpdateAt&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" vertex="1" parent="LRzMJlyDuLPTHoYJMiWl-15">
+          <mxGeometry y="35" width="250" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="LRzMJlyDuLPTHoYJMiWl-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=-0.002;entryY=0.103;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="LRzMJlyDuLPTHoYJMiWl-5" target="LRzMJlyDuLPTHoYJMiWl-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="LRzMJlyDuLPTHoYJMiWl-18" value="" style="edgeStyle=none;orthogonalLoop=1;jettySize=auto;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="520" y="410" as="sourcePoint" />
+            <mxPoint x="600" y="410" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
