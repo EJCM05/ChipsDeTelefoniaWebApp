@@ -23,6 +23,15 @@ from .views import *
 app_name = "dashboard"
 
 urlpatterns = [
+    # renderizado Pages
     path("dashboardHome/", dashboard_home, name="dashboard_home"),
+    path("dashboardClientes/", dashboard_clientes, name="dashboard_clientes"),
+    path("dashboardPerfil/", dashboard_perfil, name="dashboard_perfil"),
+    path("dashboardEstadisticas/", dashboard_estadisticas, name="dashboard_estadisticas"),
+    path("dashboardVentas/", dashboard_ventas, name="dashboard_ventas"),
+    path("dashboardReportes/", dashboard_reportes, name="dashboard_reportes"),
+    
+    
+    # CBVS
     path("logout/", LogoutView.as_view(), name="logout"),
 ]

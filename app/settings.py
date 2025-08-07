@@ -147,6 +147,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_REDIRECT_URL = "dashboard:dashboard_home"
 # Redirige a la página de login si se intenta acceder a una página restringida
 LOGIN_URL = "home:login"
+LOGOUT_REDIRECT_URL = '/'
+
 
 # Configuración de Crispy Forms para usar Bootstrap 5
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"

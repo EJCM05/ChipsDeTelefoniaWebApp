@@ -7,91 +7,14 @@
     <meta name="description" content="" />
     <meta
       name="author"
-      content="Mark Otto, Jacob Thornton, and Bootstrap contributors"
+      content="EberColmenares"
     />
     <meta name="generator" content="Astro v5.9.2" />
-    <title>Dashboard Template · Bootstrap v5.3</title>
-    <link
-      rel="canonical"
-      href="https://getbootstrap.com/docs/5.3/examples/dashboard/"
-    />
+    <title>Dashboard - Gestion SimsCards</title>
     <script src="../assets/js/color-modes.js"></script>
     <link rel="stylesheet" href="{% static 'dist/css/bootstrap.min.css' %}" />
     <meta name="theme-color" content="#712cf9" />
     <link href="{% static 'css/dashboard.css' %}" rel="stylesheet" />
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-      .b-example-divider {
-        width: 100%;
-        height: 3rem;
-        background-color: #0000001a;
-        border: solid rgba(0, 0, 0, 0.15);
-        border-width: 1px 0;
-        box-shadow: inset 0 0.5em 1.5em #0000001a,
-          inset 0 0.125em 0.5em #00000026;
-      }
-      .b-example-vr {
-        flex-shrink: 0;
-        width: 1.5rem;
-        height: 100vh;
-      }
-      .bi {
-        vertical-align: -0.125em;
-        fill: currentColor;
-      }
-      .nav-scroller {
-        position: relative;
-        z-index: 2;
-        height: 2.75rem;
-        overflow-y: hidden;
-      }
-      .nav-scroller .nav {
-        display: flex;
-        flex-wrap: nowrap;
-        padding-bottom: 1rem;
-        margin-top: -1px;
-        overflow-x: auto;
-        text-align: center;
-        white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
-      }
-      .btn-bd-primary {
-        --bd-violet-bg: #712cf9;
-        --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
-        --bs-btn-font-weight: 600;
-        --bs-btn-color: var(--bs-white);
-        --bs-btn-bg: var(--bd-violet-bg);
-        --bs-btn-border-color: var(--bd-violet-bg);
-        --bs-btn-hover-color: var(--bs-white);
-        --bs-btn-hover-bg: #6528e0;
-        --bs-btn-hover-border-color: #6528e0;
-        --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
-        --bs-btn-active-color: var(--bs-btn-hover-color);
-        --bs-btn-active-bg: #5a23c8;
-        --bs-btn-active-border-color: #5a23c8;
-      }
-      .bd-mode-toggle {
-        z-index: 1500;
-      }
-      .bd-mode-toggle .bi {
-        width: 1em;
-        height: 1em;
-      }
-      .bd-mode-toggle .dropdown-menu .active .bi {
-        display: block !important;
-      }
-    </style>
   </head>
   <body>
     <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
@@ -119,76 +42,6 @@
         ></path>
       </symbol>
     </svg>
-    <div
-      class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle"
-    >
-      <button
-        class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center"
-        id="bd-theme"
-        type="button"
-        aria-expanded="false"
-        data-bs-toggle="dropdown"
-        aria-label="Toggle theme (auto)"
-      >
-        <svg class="bi my-1 theme-icon-active" aria-hidden="true">
-          <use href="#circle-half"></use>
-        </svg>
-        <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
-      </button>
-      <ul
-        class="dropdown-menu dropdown-menu-end shadow"
-        aria-labelledby="bd-theme-text"
-      >
-        <li>
-          <button
-            type="button"
-            class="dropdown-item d-flex align-items-center"
-            data-bs-theme-value="light"
-            aria-pressed="false"
-          >
-            <svg class="bi me-2 opacity-50" aria-hidden="true">
-              <use href="#sun-fill"></use>
-            </svg>
-            Light
-            <svg class="bi ms-auto d-none" aria-hidden="true">
-              <use href="#check2"></use>
-            </svg>
-          </button>
-        </li>
-        <li>
-          <button
-            type="button"
-            class="dropdown-item d-flex align-items-center"
-            data-bs-theme-value="dark"
-            aria-pressed="false"
-          >
-            <svg class="bi me-2 opacity-50" aria-hidden="true">
-              <use href="#moon-stars-fill"></use>
-            </svg>
-            Dark
-            <svg class="bi ms-auto d-none" aria-hidden="true">
-              <use href="#check2"></use>
-            </svg>
-          </button>
-        </li>
-        <li>
-          <button
-            type="button"
-            class="dropdown-item d-flex align-items-center active"
-            data-bs-theme-value="auto"
-            aria-pressed="true"
-          >
-            <svg class="bi me-2 opacity-50" aria-hidden="true">
-              <use href="#circle-half"></use>
-            </svg>
-            Auto
-            <svg class="bi ms-auto d-none" aria-hidden="true">
-              <use href="#check2"></use>
-            </svg>
-          </button>
-        </li>
-      </ul>
-    </div>
     <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
       <symbol id="calendar3" viewBox="0 0 16 16">
         <path
@@ -284,7 +137,7 @@
       <a
         class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white"
         href="#"
-        >Company name</a
+        >Panel Principal</a
       >
       <ul class="navbar-nav flex-row d-md-none">
         <li class="nav-item text-nowrap">
@@ -358,7 +211,7 @@
                   <a
                     class="nav-link d-flex align-items-center gap-2 active"
                     aria-current="page"
-                    href="#"
+                    href="{% url 'dashboard:dashboard_home' %}"
                   >
                     <svg class="bi" aria-hidden="true">
                       <use xlink:href="#house-fill"></use>
@@ -367,43 +220,43 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link d-flex align-items-center gap-2" href="#">
+                  <a class="nav-link d-flex align-items-center gap-2" href="{% url 'dashboard:dashboard_clientes' %}">
                     <svg class="bi" aria-hidden="true">
                       <use xlink:href="#file-earmark"></use>
                     </svg>
-                    Orders
+                    Clientes
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link d-flex align-items-center gap-2" href="#">
+                  <a class="nav-link d-flex align-items-center gap-2" href="{% url 'dashboard:dashboard_ventas' %}">
                     <svg class="bi" aria-hidden="true">
                       <use xlink:href="#cart"></use>
                     </svg>
-                    Products
+                    Ventas
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link d-flex align-items-center gap-2" href="#">
+                  <a class="nav-link d-flex align-items-center gap-2" href="/admin/">
                     <svg class="bi" aria-hidden="true">
                       <use xlink:href="#people"></use>
                     </svg>
-                    Customers
+                    Panel
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link d-flex align-items-center gap-2" href="#">
+                  <a class="nav-link d-flex align-items-center gap-2" href="{% url 'dashboard:dashboard_estadisticas' %}">
                     <svg class="bi" aria-hidden="true">
                       <use xlink:href="#graph-up"></use>
                     </svg>
-                    Reports
+                    Estadisticas
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link d-flex align-items-center gap-2" href="#">
+                  <a class="nav-link d-flex align-items-center gap-2" href="{% url 'dashboard:dashboard_reportes' %}">
                     <svg class="bi" aria-hidden="true">
                       <use xlink:href="#puzzle"></use>
                     </svg>
-                    Integrations
+                    Reportes
                   </a>
                 </li>
               </ul>
@@ -458,184 +311,32 @@
               <hr class="my-3" />
               <ul class="nav flex-column mb-auto">
                 <li class="nav-item">
-                  <a class="nav-link d-flex align-items-center gap-2" href="#">
+                  <a class="nav-link d-flex align-items-center gap-2" href="{% url 'dashboard:dashboard_perfil' %}">
                     <svg class="bi" aria-hidden="true">
                       <use xlink:href="#gear-wide-connected"></use>
                     </svg>
-                    Settings
+                    Perfil
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link d-flex align-items-center gap-2" href="#">
-                    <svg class="bi" aria-hidden="true">
+                  <form method="post" action="{% url 'dashboard:logout' %}">
+                  {% csrf_token %}
+                   <button class="nav-link d-flex align-items-center gap-2" type="submit">
+                     <svg class="bi" aria-hidden="true">
                       <use xlink:href="#door-closed"></use>
                     </svg>
-                    Sign out
-                  </a>
+                    Salir
+                   </button>
+                  </form>
                 </li>
               </ul>
             </div>
           </div>
         </div>
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-          <div
-            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
-          >
-            <h1 class="h2">Dashboard</h1>
-            <div class="btn-toolbar mb-2 mb-md-0">
-              <div class="btn-group me-2">
-                <button type="button" class="btn btn-sm btn-outline-secondary">
-                  Share
-                </button>
-                <button type="button" class="btn btn-sm btn-outline-secondary">
-                  Export
-                </button>
-              </div>
-              <button
-                type="button"
-                class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1"
-              >
-                <svg class="bi" aria-hidden="true">
-                  <use xlink:href="#calendar3"></use>
-                </svg>
-                This week
-              </button>
-            </div>
-          </div>
-          <canvas
-            class="my-4 w-100"
-            id="myChart"
-            width="900"
-            height="380"
-          ></canvas>
-          <h2>Section title</h2>
-          <div class="table-responsive small">
-            <table class="table table-striped table-sm">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Header</th>
-                  <th scope="col">Header</th>
-                  <th scope="col">Header</th>
-                  <th scope="col">Header</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1,001</td>
-                  <td>random</td>
-                  <td>data</td>
-                  <td>placeholder</td>
-                  <td>text</td>
-                </tr>
-                <tr>
-                  <td>1,002</td>
-                  <td>placeholder</td>
-                  <td>irrelevant</td>
-                  <td>visual</td>
-                  <td>layout</td>
-                </tr>
-                <tr>
-                  <td>1,003</td>
-                  <td>data</td>
-                  <td>rich</td>
-                  <td>dashboard</td>
-                  <td>tabular</td>
-                </tr>
-                <tr>
-                  <td>1,003</td>
-                  <td>information</td>
-                  <td>placeholder</td>
-                  <td>illustrative</td>
-                  <td>data</td>
-                </tr>
-                <tr>
-                  <td>1,004</td>
-                  <td>text</td>
-                  <td>random</td>
-                  <td>layout</td>
-                  <td>dashboard</td>
-                </tr>
-                <tr>
-                  <td>1,005</td>
-                  <td>dashboard</td>
-                  <td>irrelevant</td>
-                  <td>text</td>
-                  <td>placeholder</td>
-                </tr>
-                <tr>
-                  <td>1,006</td>
-                  <td>dashboard</td>
-                  <td>illustrative</td>
-                  <td>rich</td>
-                  <td>data</td>
-                </tr>
-                <tr>
-                  <td>1,007</td>
-                  <td>placeholder</td>
-                  <td>tabular</td>
-                  <td>information</td>
-                  <td>irrelevant</td>
-                </tr>
-                <tr>
-                  <td>1,008</td>
-                  <td>random</td>
-                  <td>data</td>
-                  <td>placeholder</td>
-                  <td>text</td>
-                </tr>
-                <tr>
-                  <td>1,009</td>
-                  <td>placeholder</td>
-                  <td>irrelevant</td>
-                  <td>visual</td>
-                  <td>layout</td>
-                </tr>
-                <tr>
-                  <td>1,010</td>
-                  <td>data</td>
-                  <td>rich</td>
-                  <td>dashboard</td>
-                  <td>tabular</td>
-                </tr>
-                <tr>
-                  <td>1,011</td>
-                  <td>information</td>
-                  <td>placeholder</td>
-                  <td>illustrative</td>
-                  <td>data</td>
-                </tr>
-                <tr>
-                  <td>1,012</td>
-                  <td>text</td>
-                  <td>placeholder</td>
-                  <td>layout</td>
-                  <td>dashboard</td>
-                </tr>
-                <tr>
-                  <td>1,013</td>
-                  <td>dashboard</td>
-                  <td>irrelevant</td>
-                  <td>text</td>
-                  <td>visual</td>
-                </tr>
-                <tr>
-                  <td>1,014</td>
-                  <td>dashboard</td>
-                  <td>illustrative</td>
-                  <td>rich</td>
-                  <td>data</td>
-                </tr>
-                <tr>
-                  <td>1,015</td>
-                  <td>random</td>
-                  <td>tabular</td>
-                  <td>information</td>
-                  <td>text</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <!-- Genera el contenido segun la seccion -->
+            {% block content %}
+            {% endblock %}
         </main>
       </div>
     </div>
@@ -649,6 +350,9 @@
       crossorigin="anonymous"
       class="astro-vvvwv3sm"
     ></script>
-    <script src="{% static 'js/dashboard/dashboard.js' %}" class="astro-vvvwv3sm"></script>
+    <script
+      src="{% static 'js/dashboard/dashboard.js' %}"
+      class="astro-vvvwv3sm"
+    ></script>
   </body>
 </html>
