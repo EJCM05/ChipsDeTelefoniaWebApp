@@ -1,0 +1,44 @@
+{% load static %}
+{% block content %}
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Lotes de SIMCards</h2>
+    <a href="{% url 'dashboard:lote_create' %}" class="btn btn-primary">Crear nuevo lote</a>
+  </div>
+  {% if lotes %}
+  <div class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th>Nombre del Lote</th>
+          <th>Máximo de SIMCards</th>
+          <th>Fecha de Creación</th>
+          <th>Propietario</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for lote in lotes %}
+        <tr>
+          <td>{{ lote.nombre_lote }}</td>
+          <td>{{ lote.max_simcard }}</td>
+          <td>{{ lote.fecha_creacion|date:"d/m/Y" }}</td>
+          <td>{{ lote.id_usuario_propietario.username }}</td>
+          <td>
+            <a href="{% url 'dashboard:lote_update' lote.pk %}" class="btn btn-sm btn-info text-white">Editar</a>
+            <a href="{% url 'dashboard:lote_delete' lote.pk %}" class="btn btn-sm btn-danger">Eliminar</a>
+            <a href="{% url 'dashboard:simcard_list' lote.pk %}" class="btn btn-sm btn-secondary">Ver SIMCards</a>
+
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="alert alert-warning" role="alert">
+    No hay lotes disponibles. ¡Crea uno para empezar!
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

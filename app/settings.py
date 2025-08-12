@@ -157,3 +157,5 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
+AUTH_USER_MODEL = 'core.Usuario' # Reemplaza 'nombre_de_tu_app' con el nombre de tu aplicación
