@@ -34,12 +34,11 @@ class LoteForm(forms.ModelForm):
 class SimCardForm(forms.ModelForm):
     class Meta:
         model = SimCard
-        fields = ['codigo', 'estado', 'numero_telefono', 'is_active', 'id_operadora']
+        fields = ['codigo', 'estado', 'numero_telefono', 'id_operadora']
         widgets = {
             'codigo': forms.TextInput(attrs={'class': 'form-control'}),
             'estado': forms.Select(attrs={'class': 'form-control'}),
             'numero_telefono': forms.TextInput(attrs={'class': 'form-control'}),
-            'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'id_operadora': forms.Select(attrs={'class': 'form-control'}),
         }
         
@@ -56,5 +55,4 @@ class SimCardForm(forms.ModelForm):
             Field('estado'),
             Field('numero_telefono'),
             Field('id_operadora'),
-            Field('is_active', css_class='form-check-input'),
         )

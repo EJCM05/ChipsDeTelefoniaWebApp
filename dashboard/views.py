@@ -118,22 +118,22 @@ class SimCardCreateView(LoginRequiredMixin, CreateView):
 # Vista para actualizar una SIMCard existente
 class SimCardUpdateView(LoginRequiredMixin, UpdateView):
     model = SimCard
-    template_name = "components/formularios/simcards/simcard_form.html"
+    template_name = "components/formularios/simscards/simscards_form.html"
     form_class = SimCardForm
     
     def get_success_url(self):
         # Redirige a la lista de SIMCards del lote actual
         simcard = self.get_object()
-        lote_pk = simcard.id_lote_perteneciente.pk
+        lote_pk = simcard.id_lote.pk
         return reverse_lazy('dashboard:simcard_list', kwargs={'pk': lote_pk})
 
 # Vista para eliminar una SIMCard
 class SimCardDeleteView(LoginRequiredMixin, DeleteView):
     model = SimCard
-    template_name = "components/confirmaciones/simcards/simcard_confirm_delete.html"
+    template_name = "components/confirmaciones/simscards/simcard_confirm_delete.html"
     
     def get_success_url(self):
         # Redirige a la lista de SIMCards del lote actual
         simcard = self.get_object()
-        lote_pk = simcard.id_lote_perteneciente.pk
+        lote_pk = simcard.id_lote.pk
         return reverse_lazy('dashboard:simcard_list', kwargs={'pk': lote_pk})
