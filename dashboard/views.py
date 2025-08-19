@@ -28,8 +28,12 @@ def dashboard_reportes(request):
 def dashboard_perfil(request):
     return render(request, "pages/perfil.html")
 
+def dashboard_operadoras(request):
+    return render(request, "pages/operadoras.html")
 
-# Vista basa en clases para listar todos los lotes
+# ==========================================================
+#               Clases para Lotes
+# ==========================================================
 class LoteListView(LoginRequiredMixin, ListView):
     model = Lote
     template_name = "pages/home.html"
@@ -70,7 +74,7 @@ class LoteDeleteView(LoginRequiredMixin, DeleteView):
     
     
 # ============================================================
-# Vistas para SimsCard
+#            Clases para SIMCards
 # ============================================================
 
 # Vista para listar las SIMCards de un lote específico
@@ -137,3 +141,32 @@ class SimCardDeleteView(LoginRequiredMixin, DeleteView):
         simcard = self.get_object()
         lote_pk = simcard.id_lote.pk
         return reverse_lazy('dashboard:simcard_list', kwargs={'pk': lote_pk})
+    
+# ======================================================================
+#               Clases para Operadoras 
+# ======================================================================
+    
+class OperadoraListView(LoginRequiredMixin, ListView):
+    model = Operadora
+    template_name = "components/tablas/operadoras/operadora_list.html"
+    context_object_name = "operadoras"
+
+# Vista para crear una nueva operadora
+class OperadoraCreateView(LoginRequiredMixin, CreateView):
+    model = Operadora
+    template_name = "components/formularios/operadoras/operadoras_form.html"
+    form_class = OperadoraForm
+    success_url = reverse_lazy("dashboard:dashboard_operadoras")
+
+# Vista para actualizar una operadora existente
+class OperadoraUpdateView(LoginRequiredMixin, UpdateView):
+    model = Operadora
+    template_name = "components/formularios/operadoras/operadoras_form.html"
+    form_class = OperadoraForm
+    success_url = reverse_lazy("dashboard:dashboard_operadoras")
+
+# Vista para eliminar una operadora
+class OperadoraDeleteView(LoginRequiredMixin, DeleteView):
+    model = Operadora
+    template_name = "components/confirmaciones/operadoras/operadoras_confirm_delete.html"
+    success_url = reverse_lazy("dashboard:dashboard_operadoras")

@@ -1,7 +1,7 @@
-{% load static %}
 {% extends 'pages/layouts/index.html' %}
+{% load static %}
 {% block title %} Página de Inicio {%endblock %} 
 {% block content %}
-<h2>Estadisticas</h2>
+{% include 'components/tablas/operadoras/operadora_list.html' %}
 {% endblock %}
     

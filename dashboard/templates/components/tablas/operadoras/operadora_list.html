@@ -1,0 +1,41 @@
+{% extends 'pages/layouts/index.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Operadoras</h2>
+        <a href="{% url 'dashboard:operadora_create' %}" class="btn btn-primary">Crear nueva operadora</a>
+    </div>
+    {% if operadoras %}
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Código</th>
+                    <th>País</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for operadora in operadoras %}
+                <tr>
+                    <td>{{ operadora.nombre_operadora }}</td>
+                    <td>{{ operadora.codigo }}</td>
+                    <td>{{ operadora.pais }}</td>
+                    <td>
+                        <a href="{% url 'dashboard:operadora_update' operadora.pk %}" class="btn btn-sm btn-info text-white">Editar</a>
+                        <a href="{% url 'dashboard:operadora_delete' operadora.pk %}" class="btn btn-sm btn-danger">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-warning" role="alert">
+        No hay operadoras disponibles. ¡Crea una para empezar!
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

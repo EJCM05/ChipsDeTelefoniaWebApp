@@ -1,0 +1,16 @@
+{% extends 'pages/layouts/index.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-4">
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">¿Estás seguro de que deseas eliminar esta operadora?</h4>
+        <p>Esta acción es irreversible y eliminará a la operadora: <strong>{{ object.nombre_operadora }}</strong>. </p>
+        <hr>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Confirmar eliminación</button>
+            <a href="{% url 'dashboard:dashboard_operadoras' %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

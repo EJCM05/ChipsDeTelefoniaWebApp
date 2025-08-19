@@ -29,7 +29,7 @@ urlpatterns = [
     path("dashboardEstadisticas/", dashboard_estadisticas, name="dashboard_estadisticas"),
     path("dashboardVentas/", dashboard_ventas, name="dashboard_ventas"),
     path("dashboardReportes/", dashboard_reportes, name="dashboard_reportes"),
-    
+    path("dashboardOperadoras/", OperadoraListView.as_view(), name="dashboard_operadoras"),
     
     # CBVS
     path("logout/", LogoutView.as_view(), name="logout"),
@@ -39,10 +39,16 @@ urlpatterns = [
     path("lotes/<int:pk>/editar/", LoteUpdateView.as_view(), name="lote_update"),
     path("lotes/<int:pk>/eliminar/", LoteDeleteView.as_view(), name="lote_delete"),
 
-    # Crud para SimsCards
-    # URLs para el CRUD de SIMCards (ahora dependen del lote)
+    # Crud para SimsCards (dependen del lote)
     path("lotes/<int:pk>/simcards/", SimCardListView.as_view(), name="simcard_list"),
     path("lotes/<int:pk>/simcards/crear/", SimCardCreateView.as_view(), name="simcard_create"),
     path("simcards/<int:pk>/editar/", SimCardUpdateView.as_view(), name="simcard_update"),
     path("simcards/<int:pk>/eliminar/", SimCardDeleteView.as_view(), name="simcard_delete"),
+
+    # CRUD para Operadoras
+    path("operadoras/crear/", OperadoraCreateView.as_view(), name="operadora_create"),
+    path("operadoras/<int:pk>/editar/", OperadoraUpdateView.as_view(), name="operadora_update"),
+    path("operadoras/<int:pk>/eliminar/", OperadoraDeleteView.as_view(), name="operadora_delete"),
+    
+
 ]

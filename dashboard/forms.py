@@ -2,8 +2,10 @@ from django import forms
 from core.models import *
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit
-
+# ==========================================
 # Formulario Para crear lotes
+# ==========================================
+
 class LoteForm(forms.ModelForm):
     class Meta:
         model = Lote
@@ -29,7 +31,10 @@ class LoteForm(forms.ModelForm):
             Field('fecha_creacion', css_class='form-control'), # Crispy Forms aplicará esta clase
             Submit('submit', 'Guardar', css_class='btn-primary mt-3')
         )
+
+# ==========================================
 # Formulario para crear SIMCards
+# ==========================================
 
 class SimCardForm(forms.ModelForm):
     class Meta:
@@ -55,4 +60,27 @@ class SimCardForm(forms.ModelForm):
             Field('estado'),
             Field('numero_telefono'),
             Field('id_operadora'),
+        )
+        
+# ==========================================
+# formulario para crear operadoras        
+# ==========================================
+
+class OperadoraForm(forms.ModelForm):
+    class Meta:
+        model = Operadora
+        fields = ["nombre_operadora", "codigo", "pais"]
+        widgets = {
+            "nombre_operadora": forms.TextInput(attrs={'class': 'form-control'}),
+            "codigo": forms.TextInput(attrs={'class': 'form-control'}),
+            "pais": forms.TextInput(attrs={'class': 'form-control'}),
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Field("nombre_operadora"),
+            Field("codigo"),
+            Field("pais"),
         )

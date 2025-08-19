@@ -1,6 +1,5 @@
-{% extends 'pages/layouts/index.html' %}
-{% block title %} Página de Inicio {%endblock %} 
-{% block content %}
+{% extends 'pages/layouts/index.html' %} {% block title %} Página de Inicio
+{%endblock %} {% block content %}
 <div
   class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
 >
@@ -26,6 +25,14 @@
   </div>
 </div>
 <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+<!-- Enlaces   -->
+<div class="d-flex justify-content-center align-items-center mb-3">
+  <h2 class="w-50">Lotes de SIMCards</h2>
+  <div class="d-flex w-50 justify-content-end align-items-center gap-2">
+    <a href="{% url 'dashboard:lote_create' %}" class="btn btn-primary">Crear nuevo lote</a>
+    <a href="{% url 'dashboard:dashboard_operadoras' %}" class="btn btn-primary">Agregar Operadora</a>
+  </div>
+</div>
 <!-- Componente de lotes Sims Cards -->
 {% include 'components/tablas/lotes/lote_list.html' %}
 <!-- fin componente -->
