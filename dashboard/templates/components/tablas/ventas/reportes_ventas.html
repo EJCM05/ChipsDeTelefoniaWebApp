@@ -1,0 +1,48 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Reporte de Ventas</h1>
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered">
+            <thead class="">
+                <tr>
+                    <th>ID Venta</th>
+                    <th>Fecha</th>
+                    <th>Cliente</th>
+                    <th>Cédula</th>
+                    <th>SIM Card</th>
+                    <th>Monto</th>
+                    <th>Usuario</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for venta in ventas %}
+                <tr>
+                    <td>{{ venta.id }}</td>
+                    <td>{{ venta.fecha_venta|date:"d/m/Y H:i" }}</td>
+                    <td>
+                        <a href="{% url 'dashboard:detalle_venta' venta.pk %}">
+                            {{ venta.id_cliente.primer_nombre }} {{ venta.id_cliente.primer_apellido }}
+                        </a>
+                    </td>
+                    <td>{{ venta.id_cliente.cedula_identidad }}</td>
+                    <td>{{ venta.id_simcard.codigo }}</td>
+                    <td>${{ venta.monto_total|floatformat:2 }}</td>
+                    <td>{{ venta.id_usuario_propietario.username }}</td>
+                    <td>
+                        <a href="{% url 'dashboard:detalle_venta' venta.pk %}" class="btn btn-info btn-sm">Ver Detalles</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="text-center">No hay ventas registradas.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends 'pages/layouts/index.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h1 class="card-title text-center">Generar Nueva Venta</h1>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+    {% csrf_token %}
+    
+    <div class="row">
+        <div class="col-md-12 mb-4">
+            <h3>Datos del Cliente</h3>
+            <hr>
+        </div>
+        <div class="col-md-6 mb-3">
+            {{ form.primer_nombre|as_crispy_field }}
+        </div>
+        <div class="col-md-6 mb-3">
+            {{ form.segundo_nombre|as_crispy_field }}
+        </div>
+        <div class="col-md-6 mb-3">
+            {{ form.primer_apellido|as_crispy_field }}
+        </div>
+        <div class="col-md-6 mb-3">
+            {{ form.segundo_apellido|as_crispy_field }}
+        </div>
+        <div class="col-md-6 mb-3">
+            {{ form.cedula_identidad|as_crispy_field }}
+        </div>
+        <div class="col-md-6 mb-3">
+            {{ form.fecha_nacimiento|as_crispy_field }}
+        </div>
+        <div class="col-md-6 mb-3">
+            {{ form.telefono|as_crispy_field }}
+        </div>
+        <div class="col-md-6 mb-3">
+            {{ form.correo|as_crispy_field }}
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-12 mb-4">
+            <h3>Selección del Producto</h3>
+            <hr>
+        </div>
+        <div class="col-md-6 mb-3">
+            {{ form.lote|as_crispy_field }}
+        </div>
+        <div class="col-md-6 mb-3">
+            {{ form.simcard|as_crispy_field }}
+        </div>
+    </div>
+    
+    <div class="d-grid gap-2 mt-4">
+        <button type="submit" class="btn btn-primary btn-lg">Procesar Venta</button>
+    </div>
+</form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    let urlAjaxTemplate = "{% url 'dashboard:ajax_load_simcards' %}"
+</script>
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+        const loteSelect = document.getElementById('id_lote');
+        const simcardSelect = document.getElementById('id_simcard');
+        // Generar la URL de Django directamente en el script
+        const ajaxUrl = urlAjaxTemplate;
+        loteSelect.addEventListener('change', function() {
+            const loteId = this.value;
+            
+            simcardSelect.innerHTML = '<option value="">--- Seleccione una SIM Card ---</option>';
+            simcardSelect.disabled = true;
+            
+            if (loteId) {
+                const fetchUrl = `${ajaxUrl}?lote_id=${loteId}`;
+                fetch(fetchUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('La respuesta de la red no fue exitosa');
+                    }
+                    return response.json();
+                    })
+                    .then(data => {
+                        data.simcards.forEach(simcard => {
+                            const option = document.createElement('option');
+                            option.value = `${simcard.id}`;
+                            option.textContent = `${simcard.codigo} | ${simcard.estado}`;
+                            simcardSelect.appendChild(option);
+                        });
+                        simcardSelect.disabled = false;
+                    })
+                    .catch(error => {
+                        console.error('Error al cargar las SIM Cards:', error);
+                        alert('No se pudieron cargar las SIM Cards. Intente de nuevo.');
+                    });
+            }
+        });
+    });
+
+</script>
+{% endblock %}

@@ -27,8 +27,8 @@ urlpatterns = [
     path("dashboardClientes/", dashboard_clientes, name="dashboard_clientes"),
     path("dashboardPerfil/", dashboard_perfil, name="dashboard_perfil"),
     path("dashboardEstadisticas/", dashboard_estadisticas, name="dashboard_estadisticas"),
-    path("dashboardVentas/", dashboard_ventas, name="dashboard_ventas"),
-    path("dashboardReportes/", dashboard_reportes, name="dashboard_reportes"),
+    path("dashboardVentas/", ListaVentasView.as_view(), name="dashboard_ventas"),
+    path("dashboardReportes/", ListaReportesView.as_view(), name="dashboard_reportes"),
     path("dashboardOperadoras/", OperadoraListView.as_view(), name="dashboard_operadoras"),
     
     # CBVS
@@ -50,5 +50,13 @@ urlpatterns = [
     path("operadoras/<int:pk>/editar/", OperadoraUpdateView.as_view(), name="operadora_update"),
     path("operadoras/<int:pk>/eliminar/", OperadoraDeleteView.as_view(), name="operadora_delete"),
     
+    # CRUD para ventas
+    path('generar-venta/', GenerarVentaView.as_view(), name='generar_venta'),
+    path('detalle-venta/<int:pk>/', DetalleVentaView.as_view(), name='detalle_venta'),
+    
+
+    
+    # Funciones Auxiliares Ajax
+    path('ajax/load-simcards/', get_simcards_by_lote, name='ajax_load_simcards'),
 
 ]

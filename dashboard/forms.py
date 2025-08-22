@@ -84,3 +84,46 @@ class OperadoraForm(forms.ModelForm):
             Field("codigo"),
             Field("pais"),
         )
+
+# Formulario de ventas
+
+class VentaForm(forms.ModelForm):
+    # ... (campos del cliente) ...
+    lote = forms.ModelChoiceField(
+        queryset=Lote.objects.all(),
+        label="Seleccionar Lote",
+        empty_label="--- Seleccione un lote ---",
+        required=True
+    )
+    
+    simcard = forms.ModelChoiceField(
+        # El queryset sigue siendo None por defecto
+        queryset=SimCard.objects.none(),
+        label="Seleccionar SIM Card",
+        empty_label="--- Seleccione una SIM Card ---",
+        required=True
+    )
+    
+    class Meta:
+        model = Cliente
+        fields = [
+            'primer_nombre', 'segundo_nombre', 'primer_apellido', 'segundo_apellido',
+            'cedula_identidad', 'fecha_nacimiento', 'telefono', 'correo'
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        # Añadir las clases de Bootstrap a los campos
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+        
+        # --- Solución al error de validación ---
+        # Si el formulario se envía (POST), actualiza el queryset del campo simcard
+        if 'lote' in self.data:
+            try:
+                lote_id = int(self.data.get('lote'))
+                # Actualiza el queryset con las SIM Cards disponibles para ese lote
+                self.fields['simcard'].queryset = SimCard.objects.filter(id_lote=lote_id).exclude(estado='ocupada')
+            except (ValueError, TypeError):
+                pass  # Si el valor no es un entero, lo ignoramos por ahora

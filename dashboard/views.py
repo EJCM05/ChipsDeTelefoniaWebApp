@@ -2,11 +2,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
-from django.views.generic import (ListView,CreateView,UpdateView,DeleteView,)
+from django.views.generic import (ListView,CreateView,UpdateView,DeleteView,FormView,DetailView)
 from core.models import *
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from .urls import *
 from .forms import *
+from django.http import JsonResponse
 
 # Funciones encargadas para el renderizado de paginas
 
@@ -170,3 +171,120 @@ class OperadoraDeleteView(LoginRequiredMixin, DeleteView):
     model = Operadora
     template_name = "components/confirmaciones/operadoras/operadoras_confirm_delete.html"
     success_url = reverse_lazy("dashboard:dashboard_operadoras")
+    
+# ==========================================================================
+                    # Clases ventas
+# ==========================================================================
+
+class GenerarVentaView(LoginRequiredMixin, FormView):
+    template_name = 'components/formularios/ventas/formulario_ventas.html'
+    form_class = VentaForm
+    success_url = reverse_lazy('dashboard:dashboard_ventas')
+
+    
+    def form_valid(self, form):
+        print("El método form_valid se ha ejecutado correctamente.")
+
+        # 1. Crear el nuevo Cliente
+        nuevo_cliente = Cliente(
+            # CAMBIO: Usar form.cleaned_data
+            primer_nombre=form.cleaned_data['primer_nombre'],
+            segundo_nombre=form.cleaned_data['segundo_nombre'],
+            primer_apellido=form.cleaned_data['primer_apellido'],
+            segundo_apellido=form.cleaned_data['segundo_apellido'],
+            cedula_identidad=form.cleaned_data['cedula_identidad'],
+            fecha_nacimiento=form.cleaned_data['fecha_nacimiento'],
+            telefono=form.cleaned_data['telefono'], # <-- AQUI ESTABA EL ERROR
+            correo=form.cleaned_data['correo'],     # <-- AQUI ESTABA EL ERROR
+            id_usuario_propietario=self.request.user
+        )
+        nuevo_cliente.save()
+
+        # 2. Obtener la SIM Card seleccionada y actualizar su estado
+        simcard_seleccionada = form.cleaned_data['simcard']
+        simcard_seleccionada.estado = 'vendida'
+        simcard_seleccionada.id_cliente = nuevo_cliente
+        simcard_seleccionada.numero_telefono = form.cleaned_data['telefono']
+        simcard_seleccionada.save()
+
+        # 3. Crear la nueva Venta
+        Venta.objects.create(
+            id_cliente=nuevo_cliente,
+            id_simcard=simcard_seleccionada,
+            id_usuario_propietario=self.request.user,
+            monto_total=10.00
+        )
+        
+        return redirect(self.success_url)
+    
+# Vista para listar las ventas (reportes)
+class ListaVentasView(LoginRequiredMixin, ListView):
+    model = Venta
+    template_name = 'pages/ventas.html'
+    context_object_name = 'ventas'
+
+    def get_queryset(self):
+        # Opcional: Muestra solo las ventas del usuario actual si es supervisor
+        if self.request.user.rol == 'supervisor':
+            return Venta.objects.filter(id_usuario_propietario=self.request.user).order_by('-fecha_venta')
+        return Venta.objects.all().order_by('-fecha_venta')
+
+# Vista de detalle para ver una factura/reporte individual
+class DetalleVentaView(LoginRequiredMixin, DetailView):
+    model = Venta
+    template_name = 'components/tablas/ventas/detalles_reportes.html'
+    context_object_name = 'venta'
+    
+    def get_queryset(self):
+        # Asegura que un supervisor solo pueda ver sus propias ventas
+        if self.request.user.rol == 'supervisor':
+            return Venta.objects.filter(id_usuario_propietario=self.request.user)
+        return Venta.objects.all()
+    
+# ==========================================================================
+                # Clase Reportes de ventas
+# ==========================================================================
+
+
+class ListaReportesView(LoginRequiredMixin, ListView):
+    model = Venta
+    template_name = 'pages/reportes.html'
+    context_object_name = 'ventas'
+    paginate_by = 10 # Número de ventas por página
+
+    def get_queryset(self):
+        # Asegura que las ventas se muestren de la más reciente a la más antigua
+        # y filtra por el usuario si es un supervisor
+        queryset = Venta.objects.all().order_by('-fecha_venta')
+
+        # Restringe los reportes si el usuario no es un administrador
+        if self.request.user.rol == 'supervisor':
+            queryset = queryset.filter(id_usuario_propietario=self.request.user)
+
+        return queryset
+
+
+# Funciones auxiliares Ajax para Las simscards
+def get_simcards_by_lote(request):
+    """
+    Vista que devuelve una lista de SIM Cards disponibles
+    (estado 'inactiva') para un lote específico, en formato JSON.
+    """
+    if request.method == 'GET' and 'lote_id' in request.GET:
+        try:
+            lote_id = request.GET.get('lote_id')
+            simcards = SimCard.objects.filter(id_lote=lote_id).exclude(estado='vendida')
+            
+            data = [
+                {
+                'id': simcard.id,
+                'codigo': simcard.codigo,
+                'estado': simcard.estado
+                }
+                for simcard in simcards
+            ]
+            return JsonResponse({'simcards': data})
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+    
+    return JsonResponse({'error': 'Petición inválida'}, status=400)

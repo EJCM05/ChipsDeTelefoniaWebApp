@@ -87,6 +87,7 @@ class SimCard(models.Model):
         ("perdida", "Perdida"),
         ("robada", "Robada"),
         ("desactivada", "Desactivada"),
+        ("vendida", "Vendida")
     )
     codigo = models.CharField(max_length=30)
     estado = models.CharField(max_length=20, choices=ESTADO_CHOICES, default="inactiva")
@@ -110,3 +111,33 @@ class SimCard(models.Model):
 
     def __str__(self):
         return self.codigo
+
+class Venta(models.Model):
+    fecha_venta = models.DateTimeField(auto_now_add=True)
+    monto_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    
+    # Claves foráneas (FK)
+    id_cliente = models.ForeignKey(
+        Cliente, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        related_name="ventas"
+    )
+    id_simcard = models.ForeignKey(
+        SimCard, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        related_name="ventas"
+    )
+    id_usuario_propietario = models.ForeignKey(
+        Usuario, 
+        on_delete=models.CASCADE, 
+        related_name="ventas"
+    )
+
+    def __str__(self):
+        return f"Venta #{self.id} - Cliente: {self.id_cliente.primer_nombre} {self.id_cliente.primer_apellido}"
+
+    class Meta:
+        verbose_name = "Venta"
+        verbose_name_plural = "Ventas"

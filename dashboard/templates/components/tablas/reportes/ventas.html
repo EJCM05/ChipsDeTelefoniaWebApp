@@ -1,0 +1,69 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-5">    
+    {% if ventas %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for venta in page_obj %}
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Venta #{{ venta.id }}</h5>
+                        <small class="text-light">{{ venta.fecha_venta|date:"d/m/Y H:i" }}</small>
+                    </div>
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">Cliente: 
+                            <span class="text-dark">{{ venta.id_cliente.primer_nombre }} {{ venta.id_cliente.primer_apellido }}</span>
+                        </h6>
+                        <ul class="list-group list-group-flush mb-3">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Cédula de Identidad
+                                <span class="badge bg-secondary rounded-pill">{{ venta.id_cliente.cedula_identidad }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                SIM Card Vendida
+                                <span class="badge bg-success rounded-pill">{{ venta.id_simcard.codigo }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Estado de la SIM
+                                <span class="badge bg-info rounded-pill">{{ venta.id_simcard.get_estado_display }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-footer bg-light d-flex justify-content-between align-items-center">
+                        <small class="text-muted">Atendido por: {{ venta.id_usuario_propietario.username }}</small>
+                        <span class="fw-bold text-success">${{ venta.monto_total|floatformat:2}}</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center" role="alert">
+            <h4 class="alert-heading">¡No hay ventas registradas!</h4>
+            <p>Comienza a procesar ventas para ver los reportes aquí.</p>
+        </div>
+    {% endif %}
+
+    {% if is_paginated %}
+    <nav aria-label="Navegación de páginas" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1">Primera</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a></li>
+            {% endif %}
+
+            <li class="page-item disabled">
+                <a class="page-link" href="#">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</a>
+            </li>
+
+            {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Última</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'pages/layouts/index.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container mt-5">
+    <div class="card ">
+        <div class="card-header bg-success text-white">
+            <h1 class="card-title text-center">Detalle de la Venta #{{ venta.id }}</h1>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="text-primary">Información de la Venta</h4>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Fecha de Venta:</strong> {{ venta.fecha_venta|date:"d/m/Y H:i" }}</li>
+                        <li class="list-group-item"><strong>Monto Total:</strong> ${{ venta.monto_total|floatformat:2 }}</li>
+                        <li class="list-group-item"><strong>Usuario que Atendió:</strong> {{ venta.id_usuario_propietario.username }}</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h4 class="text-primary">Información del Cliente</h4>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Nombre Completo:</strong> {{ venta.id_cliente.primer_nombre }} {{ venta.id_cliente.primer_apellido }}</li>
+                        <li class="list-group-item"><strong>Cédula:</strong> V{{ venta.id_cliente.cedula_identidad }}</li>
+                        <li class="list-group-item"><strong>Teléfono:</strong> {{ venta.id_cliente.telefono }}</li>
+                        <li class="list-group-item"><strong>Correo:</strong> {{ venta.id_cliente.correo }}</li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <h4 class="text-primary">Información de la SIM Card</h4>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Código de SIM:</strong> {{ venta.id_simcard.codigo }}</li>
+                        <li class="list-group-item"><strong>Número de Teléfono:</strong> {{ venta.id_simcard.numero_telefono }}</li>
+                        <li class="list-group-item"><strong>Estado Actual:</strong> <span class="badge bg-success">{{ venta.id_simcard.get_estado_display }}</span></li>
+                        <li class="list-group-item"><strong>Operadora:</strong> {{ venta.id_simcard.id_operadora.nombre_operadora }}</li>
+                        <li class="list-group-item"><strong>Lote:</strong> {{ venta.id_simcard.id_lote.nombre_lote }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-end">
+            <a href="{% url 'dashboard:dashboard_ventas' %}" class="btn btn-secondary">Volver al Reporte</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
