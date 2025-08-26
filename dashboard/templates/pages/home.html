@@ -1,39 +1,50 @@
 {% extends 'pages/layouts/index.html' %} {% block title %} Página de Inicio
 {%endblock %} {% block content %}
-<div
-  class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
->
-  <h1 class="h2">Metricas</h1>
-  <div class="btn-toolbar mb-2 mb-md-0">
-    <div class="btn-group me-2">
-      <button type="button" class="btn btn-sm btn-outline-secondary">
-        Share
-      </button>
-      <button type="button" class="btn btn-sm btn-outline-secondary">
-        Export
-      </button>
+
+  <div
+    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+  >
+    <h1 class="h2">Métricas de Ventas</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group me-2 w-100">
+        <button type="button" class="btn btn-sm btn-outline-secondary rounded">
+          Compartir
+        </button>
+        <button type="button" class="btn btn-sm btn-outline-secondary rounded">
+          Exportar
+        </button>
+        <input
+          type="number"
+          id="yearFilter"
+          min="2020"
+          max="2030"
+          class="form-control form-control rounded w-100"
+          placeholder="Escribe un año"
+          />
+      </div>
     </div>
-    <button
-      type="button"
-      class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1"
-    >
-      <svg class="bi" aria-hidden="true">
-        <use xlink:href="#calendar3"></use>
-      </svg>
-      This week
-    </button>
   </div>
-</div>
-<canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+  <div class="chart-container rounded">
+    <canvas id="myChart" width="900" height="380"></canvas>
+  </div>
+
 <!-- Enlaces   -->
-<div class="d-flex justify-content-center align-items-center mb-3">
+<div class="d-flex justify-content-center align-items-center my-4">
   <h2 class="w-50">Lotes de SIMCards</h2>
   <div class="d-flex w-50 justify-content-end align-items-center gap-2">
-    <a href="{% url 'dashboard:lote_create' %}" class="btn btn-primary">Crear nuevo lote</a>
-    <a href="{% url 'dashboard:dashboard_operadoras' %}" class="btn btn-primary">Agregar Operadora</a>
+    <a href="{% url 'dashboard:lote_create' %}" class="btn btn-primary"
+      >Crear nuevo lote</a
+    >
+    <a href="{% url 'dashboard:dashboard_operadoras' %}" class="btn btn-primary"
+      >Agregar Operadora</a
+    >
   </div>
 </div>
 <!-- Componente de lotes Sims Cards -->
 {% include 'components/tablas/lotes/lote_list.html' %}
 <!-- fin componente -->
+<script>
+  const Obtener_Api_ventas = "{% url 'dashboard:ventas_data' 0 %}";
+</script>
+
 {% endblock %}

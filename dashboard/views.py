@@ -8,7 +8,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .urls import *
 from .forms import *
 from django.http import JsonResponse
-
+from django.db.models.functions import ExtractMonth
+from django.db.models import Count, Q, F, Sum
 # Funciones encargadas para el renderizado de paginas
 
 def dashboard_home(request):
@@ -263,6 +264,41 @@ class ListaReportesView(LoginRequiredMixin, ListView):
 
         return queryset
 
+# Funcion auxiliar para el envio de datos a la grafica 
+def obtener_ventas(request, year):
+    # Filtra las ventas por el año solicitado
+    ventas = Venta.objects.filter(fecha_venta__year=year)
+
+    # Agrega la cantidad de chips y el monto total por mes
+    datos_agregados = ventas.annotate(
+        mes=ExtractMonth('fecha_venta')
+    ).values('mes').annotate(
+        chips_vendidos=Count('id_simcard'),
+        monto_total=Sum('monto_total')
+    ).order_by('mes')
+
+    # Prepara los datos para la respuesta JSON
+    labels = [
+        'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+        'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
+    ]
+    
+    chips_vendidos = [0] * 12
+    monto_total = [0] * 12
+
+    for dato in datos_agregados:
+        # Los meses de Django son 1-12, los índices de la lista son 0-11
+        mes_index = dato['mes'] - 1
+        chips_vendidos[mes_index] = dato['chips_vendidos']
+        monto_total[mes_index] = float(dato['monto_total'])
+
+    response_data = {
+        'labels': labels,
+        'chipsVendidos': chips_vendidos,
+        'montoTotal': monto_total
+    }
+    
+    return JsonResponse(response_data)
 
 # Funciones auxiliares Ajax para Las simscards
 def get_simcards_by_lote(request):

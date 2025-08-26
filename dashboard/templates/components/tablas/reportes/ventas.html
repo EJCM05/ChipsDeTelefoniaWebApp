@@ -6,7 +6,7 @@
     {% if ventas %}
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
             {% for venta in page_obj %}
-            <div class="col">
+            <div class="col w-100 mx-auto">
                 <div class="card h-100 shadow-sm border-0">
                     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Venta #{{ venta.id }}</h5>
@@ -22,7 +22,7 @@
                                 <span class="badge bg-secondary rounded-pill">{{ venta.id_cliente.cedula_identidad }}</span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                SIM Card Vendida
+                                Codigo SIM Card Vendida
                                 <span class="badge bg-success rounded-pill">{{ venta.id_simcard.codigo }}</span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -32,7 +32,7 @@
                         </ul>
                     </div>
                     <div class="card-footer bg-light d-flex justify-content-between align-items-center">
-                        <small class="text-muted">Atendido por: {{ venta.id_usuario_propietario.username }}</small>
+                        <small class="text-muted">Venta Generada</small>
                         <span class="fw-bold text-success">${{ venta.monto_total|floatformat:2}}</span>
                     </div>
                 </div>

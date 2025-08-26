@@ -2,13 +2,13 @@
 {% block content %}
 <div class="container mt-4">
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Chips: {{ lote.nombre_lote }}</h2>
-    <a href="{% url 'dashboard:simcard_create' lote.pk %}" class="btn btn-primary">Crear nueva SIMCard</a>
+    <h2>Chips - {{ lote.nombre_lote }}</h2>
+    <a href="{% url 'dashboard:simcard_create' lote.pk %}" class="btn btn-primary">Agregar SimCard</a>
   </div>
   {% if simcards %}
   <div class="table-responsive">
-    <table class="table table-striped table-hover">
-      <thead class="table-dark">
+    <table class="table table-hover">
+      <thead class="text-center">
         <tr>
           <th>Id</th>
           <th>Codigo SimCard</th>

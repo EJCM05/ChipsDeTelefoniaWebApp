@@ -55,7 +55,9 @@ urlpatterns = [
     path('detalle-venta/<int:pk>/', DetalleVentaView.as_view(), name='detalle_venta'),
     
 
-    
+    # Funcion de la graica
+    path('api/ventas/<int:year>/', obtener_ventas, name='ventas_data'),
+
     # Funciones Auxiliares Ajax
     path('ajax/load-simcards/', get_simcards_by_lote, name='ajax_load_simcards'),
 
