@@ -2,7 +2,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
-from django.views.generic import (ListView,CreateView,UpdateView,DeleteView,FormView,DetailView)
+from django.views.generic import (ListView,CreateView,UpdateView,DeleteView,FormView,DetailView,TemplateView)
 from core.models import *
 from django.shortcuts import render, redirect, get_object_or_404
 from .urls import *
@@ -10,6 +10,12 @@ from .forms import *
 from django.http import JsonResponse
 from django.db.models.functions import ExtractMonth
 from django.db.models import Count, Q, F, Sum
+import openpyxl
+from openpyxl.styles import Font, Alignment
+from datetime import date
+from openpyxl.utils import get_column_letter # Importar para obtener la letra de la columna
+from django.http import HttpResponse
+
 # Funciones encargadas para el renderizado de paginas
 
 def dashboard_home(request):
@@ -32,6 +38,36 @@ def dashboard_perfil(request):
 
 def dashboard_operadoras(request):
     return render(request, "pages/operadoras.html")
+
+# ==========================================================
+#               Clases para clientes / buscador
+# ==========================================================
+class ViewClientes(TemplateView):
+    template_name = 'pages/clientes.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        cedula_buscada = self.request.GET.get('cedula', '').strip()
+        
+        if cedula_buscada:
+            try:
+                cliente = Cliente.objects.get(cedula_identidad=cedula_buscada)
+                context['cliente'] = cliente
+                
+                # Obtener todas las SIM Cards asociadas al cliente
+                simcards_asociadas = SimCard.objects.filter(id_cliente=cliente)
+                context['simcards_asociadas'] = simcards_asociadas
+                
+                # Obtener todas las ventas asociadas al cliente
+                ventas_asociadas = Venta.objects.filter(id_cliente=cliente).order_by('-fecha_venta')
+                context['ventas_asociadas'] = ventas_asociadas
+
+            except Cliente.DoesNotExist:
+                context['error'] = 'No se encontró ningún cliente con esa cédula.'
+            except Exception as e:
+                context['error'] = f'Ocurrió un error inesperado: {str(e)}'
+        
+        return context
 
 # ==========================================================
 #               Clases para Lotes
@@ -263,6 +299,151 @@ class ListaReportesView(LoginRequiredMixin, ListView):
             queryset = queryset.filter(id_usuario_propietario=self.request.user)
 
         return queryset
+
+# Funcion para generar excel con la muestra de ventas
+
+
+def generar_reporte_lotes_excel(request):
+    # Obtener el año y el mes de los parámetros GET
+    year = request.GET.get('year')
+    month = request.GET.get('month')
+
+    if not year or not month:
+        # Si no se ha seleccionado un mes, simplemente mostramos el formulario
+        return render(request, 'estadisticas/reporte_lotes.html')
+
+    try:
+        year = int(year)
+        month = int(month)
+    except (ValueError, TypeError):
+        # Manejamos errores si los valores no son números
+        return render(request, 'estadisticas/reporte_lotes.html', {'error': 'Año o mes no válido.'})
+
+    # Crear un nuevo libro de trabajo de Excel
+    workbook = openpyxl.Workbook()
+    # Eliminar la hoja por defecto que se crea
+    default_sheet = workbook.active
+    workbook.remove(default_sheet)
+
+    # Filtrar los lotes
+    lotes = Lote.objects.all()
+
+    # Recorrer cada lote para crear una hoja
+    for lote in lotes:
+        # Crear una nueva hoja con el nombre del lote
+        sheet = workbook.create_sheet(title=lote.nombre_lote)
+
+        # Encabezados de la hoja
+        sheet.merge_cells('A1:D1')
+        title_cell = sheet['A1']
+        title_cell.value = f"Reporte del Lote '{lote.nombre_lote}' - Mes {month}/{year}"
+        title_cell.font = Font(bold=True, size=14)
+        title_cell.alignment = Alignment(horizontal='center')
+
+        # Encabezados de las columnas para SIM Cards
+        headers_simcard = [
+            "Código de SIM Card",
+            "Número de Teléfono",
+            "Estado",
+            "Fecha de Creación"
+        ]
+        
+        # Escribir los encabezados de SIM Cards
+        for col_num, header in enumerate(headers_simcard, 1):
+            cell = sheet.cell(row=3, column=col_num)
+            cell.value = header
+            cell.font = Font(bold=True)
+
+        # Filtrar SIM Cards por lote y mes/año
+        simcards = SimCard.objects.filter(
+            id_lote=lote,
+            created_at__year=year,
+            created_at__month=month
+        ).order_by('created_at')
+
+        row_num = 4
+        if simcards.exists():
+            for simcard in simcards:
+                sheet.cell(row=row_num, column=1, value=simcard.codigo)
+                sheet.cell(row=row_num, column=2, value=simcard.numero_telefono if simcard.numero_telefono else "No asignado")
+                sheet.cell(row=row_num, column=3, value=simcard.get_estado_display())
+                sheet.cell(row=row_num, column=4, value=simcard.created_at.strftime("%Y-%m-%d"))
+                row_num += 1
+        else:
+            sheet.cell(row=row_num, column=1, value="No se encontraron SIM Cards en este mes.")
+            sheet.cell(row=row_num, column=1).font = Font(italic=True)
+            sheet.merge_cells(f'A{row_num}:D{row_num}')
+            row_num += 1
+
+        # Separador para las Ventas
+        row_num += 2
+        
+        # Encabezados de las columnas para Ventas
+        sheet.merge_cells(f'A{row_num}:D{row_num}')
+        ventas_title_cell = sheet[f'A{row_num}']
+        ventas_title_cell.value = "Ventas Realizadas"
+        ventas_title_cell.font = Font(bold=True, size=12)
+        ventas_title_cell.alignment = Alignment(horizontal='center')
+        
+        row_num += 1
+        headers_venta = [
+            "Fecha de Venta",
+            "Monto Total",
+            "Cédula del Cliente",
+            "Código de SIM Card"
+        ]
+        
+        for col_num, header in enumerate(headers_venta, 1):
+            cell = sheet.cell(row=row_num, column=col_num)
+            cell.value = header
+            cell.font = Font(bold=True)
+            
+        row_num += 1
+
+        # Filtrar Ventas por lote y mes/año
+        ventas = Venta.objects.filter(
+            id_simcard__id_lote=lote,
+            fecha_venta__year=year,
+            fecha_venta__month=month
+        ).order_by('fecha_venta')
+
+        if ventas.exists():
+            for venta in ventas:
+                sheet.cell(row=row_num, column=1, value=venta.fecha_venta.strftime("%Y-%m-%d %H:%M"))
+                sheet.cell(row=row_num, column=2, value=float(venta.monto_total))
+                sheet.cell(row=row_num, column=3, value=venta.id_cliente.cedula_identidad if venta.id_cliente else "Cliente eliminado")
+                sheet.cell(row=row_num, column=4, value=venta.id_simcard.codigo if venta.id_simcard else "SIM Card eliminada")
+                row_num += 1
+        else:
+            sheet.cell(row=row_num, column=1, value="No se encontraron ventas en este mes.")
+            sheet.cell(row=row_num, column=1).font = Font(italic=True)
+            sheet.merge_cells(f'A{row_num}:D{row_num}')
+
+        # SOLUCIÓN: Ajustar el ancho de las columnas de forma segura
+        for col in range(1, 5): # Iterar sobre las columnas A, B, C, D
+            column_letter = get_column_letter(col)
+            max_length = 0
+            for row in range(1, sheet.max_row + 1):
+                cell = sheet[f"{column_letter}{row}"]
+                # Evitar las celdas fusionadas
+                if cell.coordinate not in sheet.merged_cells:
+                    try:
+                        if len(str(cell.value)) > max_length:
+                            max_length = len(str(cell.value))
+                    except (TypeError, AttributeError):
+                        pass
+            adjusted_width = (max_length + 2)
+            sheet.column_dimensions[column_letter].width = adjusted_width
+
+    # Preparar la respuesta HTTP
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    filename = f"Reporte_Lotes_{year}_{month}.xlsx"
+    response['Content-Disposition'] = f'attachment; filename={filename}'
+    
+    # Guardar el libro de trabajo en la respuesta HTTP
+    workbook.save(response)
+    return response
+
 
 # Funcion auxiliar para el envio de datos a la grafica 
 def obtener_ventas(request, year):

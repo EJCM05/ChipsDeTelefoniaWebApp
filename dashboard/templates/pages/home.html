@@ -7,10 +7,10 @@
     <h1 class="h2">Métricas de Ventas</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2 w-100">
-        <button type="button" class="btn btn-sm btn-outline-secondary rounded">
+        <button type="button" class="btn btn-sm rounded">
           Compartir
         </button>
-        <button type="button" class="btn btn-sm btn-outline-secondary rounded">
+        <button type="button" class="btn btn-sm rounded">
           Exportar
         </button>
         <input
@@ -30,14 +30,18 @@
 
 <!-- Enlaces   -->
 <div class="d-flex justify-content-center align-items-center my-4">
-  <h2 class="w-50">Lotes de SIMCards</h2>
+  <h2 class="w-50">Lista / Lotes</h2>
   <div class="d-flex w-50 justify-content-end align-items-center gap-2">
-    <a href="{% url 'dashboard:lote_create' %}" class="btn btn-primary"
+    <button class="btn btn-primary">
+      <a href="{% url 'dashboard:lote_create' %}" 
       >Crear nuevo lote</a
-    >
-    <a href="{% url 'dashboard:dashboard_operadoras' %}" class="btn btn-primary"
+      >
+    </button>
+    <button class="btn btn-primary">
+      <a href="{% url 'dashboard:dashboard_operadoras' %}"
       >Agregar Operadora</a
-    >
+      >
+    </button>
   </div>
 </div>
 <!-- Componente de lotes Sims Cards -->

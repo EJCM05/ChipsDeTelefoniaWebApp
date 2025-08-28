@@ -4,7 +4,7 @@
   {% if lotes %}
   <div class="table-responsive">
     <table class="table table-striped table-hover">
-      <thead class="text-center">
+      <thead class="">
         <tr>
           <th>Nombre del Lote</th>
           <th>Máximo de SIMCards</th>
@@ -21,10 +21,16 @@
           <td>{{ lote.fecha_creacion|date:"d/m/Y" }}</td>
           <td>{{ lote.id_usuario_propietario.username }}</td>
           <td>
-            <a href="{% url 'dashboard:simcard_list' lote.pk %}" class="btn btn-sm btn-secondary"><i class="bi bi-info-square"></i></a>
-            <a href="{% url 'dashboard:lote_update' lote.pk %}" class="btn btn-sm btn-info text-white"><i class="bi bi-pencil-square"></i></a>
-            <a href="{% url 'dashboard:lote_delete' lote.pk %}" class="btn btn-sm btn-danger"><i class="bi bi-trash3"></i></a>
-
+            <button class="btn btn-sm text-white">
+              <a href="{% url 'dashboard:simcard_list' lote.pk %}"><i class="bi bi-table"></i></a>
+            </button>
+            <button class="btn btn-sm text-white"> 
+              <a href="{% url 'dashboard:lote_update' lote.pk %}"><i class="bi bi-pencil-square"></i></a>
+            </button>
+            <button class="btn btn-sm text-white">
+              <a href="{% url 'dashboard:lote_delete' lote.pk %}"><i class="bi bi-trash3"></i></a>
+            </button>
+              
           </td>
         </tr>
         {% endfor %}

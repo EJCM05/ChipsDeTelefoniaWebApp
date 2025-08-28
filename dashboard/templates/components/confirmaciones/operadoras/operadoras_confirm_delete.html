@@ -1,7 +1,7 @@
 {% extends 'pages/layouts/index.html' %}
 {% load static %}
 {% block content %}
-<div class="container mt-4">
+<div class="container mt-4 min-vh-100 text-center p-4">
     <div class="alert alert-danger" role="alert">
         <h4 class="alert-heading">¿Estás seguro de que deseas eliminar esta operadora?</h4>
         <p>Esta acción es irreversible y eliminará a la operadora: <strong>{{ object.nombre_operadora }}</strong>. </p>

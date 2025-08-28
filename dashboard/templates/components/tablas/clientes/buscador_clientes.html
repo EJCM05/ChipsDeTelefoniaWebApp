@@ -1,0 +1,101 @@
+{% block content%}
+<div class="container mt-5">
+    <div class="card shadow-lg p-4">
+        <form id="searchForm" method="GET" class="mb-4 pt-5">
+    <div class="row g-3 align-items-center">
+        <div class="col-md-auto">
+            <label for="cedula" class="form-label mb-0">Cédula de Identidad:</label>
+        </div>
+        <div class="col">
+            <input type="text" id="cedula" name="cedula" class="form-control" placeholder="Ej. V-12345678" value="{{ request.GET.cedula|default_if_none:'' }}">
+        </div>
+        <div class="col-md-auto">
+            <button type="submit" class="btn btn-primary">Buscar</button>
+            <button type="button" id="limpiarBtn" class="btn btn-secondary">Limpiar</button>
+        </div>
+    </div>
+</form> 
+
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+                <p class="mb-0">{{ error }}</p>
+            </div>
+        {% elif cliente %}
+            <div class="card mt-4 border-success">
+                <div class="card-header bg-success text-white">
+                    <h3 class="card-title mb-0">Información del Cliente :</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row g-2">
+                        <div class="col-md-6"><strong class="text-secondary">Nombre Completo:</strong> {{ cliente.primer_nombre }} {{ cliente.segundo_nombre }} {{ cliente.primer_apellido }} {{ cliente.segundo_apellido }}</div>
+                        <div class="col-md-6"><strong class="text-secondary">Cédula:</strong> {{ cliente.cedula_identidad }}</div>
+                        <div class="col-md-6"><strong class="text-secondary">Teléfono:</strong> {{ cliente.telefono }}</div>
+                        <div class="col-md-6"><strong class="text-secondary">Correo:</strong> {{ cliente.correo }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-header bg-success text-white">
+                    <h3 class="card-title mb-0">SIM Cards Asociadas</h3>
+                </div>
+                <div class="card-body">
+                    {% if simcards_asociadas %}
+                        <ul class="list-group list-group-flush">
+                            {% for simcard in simcards_asociadas %}
+                                <li class="list-group-item">
+                                    <strong>Código:</strong> <span class="badge bg-primary me-2">{{ simcard.codigo }}</span>
+                                    <strong>Número:</strong> <span class="text-muted">{{ simcard.numero_telefono|default:"No asignado" }}</span> | 
+                                    <strong>Estado:</strong> <span class="badge {% if simcard.estado == 'activa' %}bg-success{% elif simcard.estado == 'inactiva' %}bg-warning text-dark{% else %}bg-secondary{% endif %}">{{ simcard.get_estado_display }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="mb-0 text-muted">No se encontraron SIM Cards asociadas a este cliente.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-header bg-success text-white">
+                    <h3 class="card-title mb-0">Ventas Realizadas</h3>
+                </div>
+                <div class="card-body">
+                    {% if ventas_asociadas %}
+                        <ul class="list-group list-group-flush">
+                            {% for venta in ventas_asociadas %}
+                                <li class="list-group-item">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <div class="flex-grow-1">
+                                            <strong>Fecha:</strong> {{ venta.fecha_venta|date:"d/m/Y H:i" }} | 
+                                            <strong>Monto:</strong> <span class="text-success fw-bold">${{ venta.monto_total }}</span>
+                                        </div>
+                                        <small class="text-muted"><strong>SIM Card:</strong> {{ venta.id_simcard.codigo|default:"SIM eliminada" }}</small>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="mb-0 text-muted">No se encontraron ventas para este cliente.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+        {% else %}
+            <p class="text-center text-muted mt-5">Ingresa una cédula para comenzar la búsqueda.</p>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    document.getElementById('limpiarBtn').addEventListener('click', function() {
+        // Obtenemos el campo de la cédula
+        const cedulaInput = document.getElementById('cedula');
+        // Vaciamos su valor
+        cedulaInput.value = '';
+        // Enviamos el formulario para recargar la página sin la cédula
+        document.getElementById('searchForm').submit();
+    });
+</script>
+
+{% endblock %}

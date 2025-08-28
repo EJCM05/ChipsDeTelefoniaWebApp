@@ -24,7 +24,7 @@ app_name = "dashboard"
 urlpatterns = [
     # renderizado Pages
     path("dashboardHome/", LoteListView.as_view(), name="dashboard_home"),
-    path("dashboardClientes/", dashboard_clientes, name="dashboard_clientes"),
+    path("dashboardClientes/", ViewClientes.as_view(), name="dashboard_clientes"),
     path("dashboardPerfil/", dashboard_perfil, name="dashboard_perfil"),
     path("dashboardEstadisticas/", dashboard_estadisticas, name="dashboard_estadisticas"),
     path("dashboardVentas/", ListaVentasView.as_view(), name="dashboard_ventas"),
@@ -54,8 +54,10 @@ urlpatterns = [
     path('generar-venta/', GenerarVentaView.as_view(), name='generar_venta'),
     path('detalle-venta/<int:pk>/', DetalleVentaView.as_view(), name='detalle_venta'),
     
+    # Funcion para generar excel estadisticas
+    path('reporte_lotes/', generar_reporte_lotes_excel, name='reporte_lotes_excel'),
 
-    # Funcion de la graica
+    # Funcion de la grafica
     path('api/ventas/<int:year>/', obtener_ventas, name='ventas_data'),
 
     # Funciones Auxiliares Ajax

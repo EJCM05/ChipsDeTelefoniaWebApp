@@ -1,11 +1,16 @@
 {% load static %}
 {% load crispy_forms_tags %}
-
 {% block content %}
 <div class="container mt-5">
-    <h1 class="mb-4 text-center">Reporte de Ventas</h1>
+    <div class="container d-flex justify-content-between">
+        <h3>Reporte de Ventas</h3>
+            <button class="btn">
+                <a href="{% url 'dashboard:generar_venta' %}">Generar Venta</a>
+            </button>
+    </div>
+</div>
     <div class="table-responsive">
-        <table class="table table-hover table-bordered">
+        <table class="table table-hover">
             <thead class="">
                 <tr>
                     <th>ID Venta</th>
@@ -33,7 +38,9 @@
                     <td>${{ venta.monto_total|floatformat:2 }}</td>
                     <td>{{ venta.id_usuario_propietario.username }}</td>
                     <td>
-                        <a href="{% url 'dashboard:detalle_venta' venta.pk %}" class="btn btn-info btn-sm">Ver Detalles</a>
+                        <button  class="btn btn-sm">
+                            <a href="{% url 'dashboard:detalle_venta' venta.pk %}">Ver Detalles</a>
+                        </button>
                     </td>
                 </tr>
                 {% empty %}

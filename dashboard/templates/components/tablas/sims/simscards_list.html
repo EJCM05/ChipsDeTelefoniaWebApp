@@ -1,9 +1,11 @@
 {% load static %}
 {% block content %}
-<div class="container mt-4">
+<div class="container mt-4 min-vh-100">
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Chips - {{ lote.nombre_lote }}</h2>
-    <a href="{% url 'dashboard:simcard_create' lote.pk %}" class="btn btn-primary">Agregar SimCard</a>
+    <h2>Chips Disponibles - {{ lote.nombre_lote }}</h2>
+    <button class="btn btn-primary">
+      <a href="{% url 'dashboard:simcard_create' lote.pk %}" >Registrar SimCard</a>
+    </button>
   </div>
   {% if simcards %}
   <div class="table-responsive">
@@ -22,7 +24,7 @@
       </thead>
       <tbody>
         {% for simcard in simcards %}
-        <tr>
+        <tr class="text-center">
           <td>{{ forloop.counter }}</td>
           <td>{{ simcard.codigo }}</td>
           <td>{{ simcard.numero_telefono }}</td>
@@ -38,8 +40,10 @@
           <td>{{ simcard.id_operadora }}</td>
 
           <td>
-            <a href="{% url 'dashboard:simcard_update' simcard.pk %}" class="btn btn-sm btn-info text-white">Editar</a>
-            <a href="{% url 'dashboard:simcard_delete' simcard.pk %}" class="btn btn-sm btn-danger">Eliminar</a>
+            <button class="btn btn-sm">
+              <a href="{% url 'dashboard:simcard_update' simcard.pk %}"><i class="bi bi-pencil-fill"></i></a>
+            </button>
+              <a href="{% url 'dashboard:simcard_delete' simcard.pk %}" class="btn btn-danger btn-sm"><i class="bi bi-trash-fill"></i></a>
           </td>
         </tr>
         {% endfor %}

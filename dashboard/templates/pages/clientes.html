@@ -1,6 +1,9 @@
 {% extends 'pages/layouts/index.html' %}
 {% block title %} Página de Inicio {%endblock %} 
 {% block content %}
-<h2>Clientes</h2>
+<div class="container min-vh-100">
+    <h2 class="mt-3">Buscador de Clientes</h2>
+    {% include 'components/tablas/clientes/buscador_clientes.html' %}
+</div>
 {% endblock %}
     

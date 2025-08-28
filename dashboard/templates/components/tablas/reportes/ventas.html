@@ -2,13 +2,13 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div class="container mt-5">    
+<div class="container mt-5 vh-min-100">    
     {% if ventas %}
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
             {% for venta in page_obj %}
             <div class="col w-100 mx-auto">
                 <div class="card h-100 shadow-sm border-0">
-                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <div class="card-header header-color text-white d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Venta #{{ venta.id }}</h5>
                         <small class="text-light">{{ venta.fecha_venta|date:"d/m/Y H:i" }}</small>
                     </div>
@@ -32,7 +32,7 @@
                         </ul>
                     </div>
                     <div class="card-footer bg-light d-flex justify-content-between align-items-center">
-                        <small class="text-muted">Venta Generada</small>
+                        <small class="text-muted">Precio de Venta Generada: </small>
                         <span class="fw-bold text-success">${{ venta.monto_total|floatformat:2}}</span>
                     </div>
                 </div>
