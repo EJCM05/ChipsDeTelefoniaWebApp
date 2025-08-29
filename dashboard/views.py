@@ -213,47 +213,31 @@ class OperadoraDeleteView(LoginRequiredMixin, DeleteView):
                     # Clases ventas
 # ==========================================================================
 
-class GenerarVentaView(LoginRequiredMixin, FormView):
-    template_name = 'components/formularios/ventas/formulario_ventas.html'
+
+class GenerarVentaView(LoginRequiredMixin, CreateView):
+    model = Venta
     form_class = VentaForm
+    template_name = 'components/formularios/ventas/formulario_ventas.html'
     success_url = reverse_lazy('dashboard:dashboard_ventas')
 
-    
     def form_valid(self, form):
-        print("El método form_valid se ha ejecutado correctamente.")
+        self.object = form.save(user=self.request.user) 
+        return redirect(self.get_success_url())
 
-        # 1. Crear el nuevo Cliente
-        nuevo_cliente = Cliente(
-            # CAMBIO: Usar form.cleaned_data
-            primer_nombre=form.cleaned_data['primer_nombre'],
-            segundo_nombre=form.cleaned_data['segundo_nombre'],
-            primer_apellido=form.cleaned_data['primer_apellido'],
-            segundo_apellido=form.cleaned_data['segundo_apellido'],
-            cedula_identidad=form.cleaned_data['cedula_identidad'],
-            fecha_nacimiento=form.cleaned_data['fecha_nacimiento'],
-            telefono=form.cleaned_data['telefono'], # <-- AQUI ESTABA EL ERROR
-            correo=form.cleaned_data['correo'],     # <-- AQUI ESTABA EL ERROR
-            id_usuario_propietario=self.request.user
-        )
-        nuevo_cliente.save()
+class EditarVentaView(LoginRequiredMixin, UpdateView):
+    model = Venta
+    form_class = VentaForm
+    template_name = 'components/formularios/ventas/formulario_ventas.html'
+    success_url = reverse_lazy('dashboard:dashboard_ventas')
 
-        # 2. Obtener la SIM Card seleccionada y actualizar su estado
-        simcard_seleccionada = form.cleaned_data['simcard']
-        simcard_seleccionada.estado = 'vendida'
-        simcard_seleccionada.id_cliente = nuevo_cliente
-        simcard_seleccionada.numero_telefono = form.cleaned_data['telefono']
-        simcard_seleccionada.save()
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
 
-        # 3. Crear la nueva Venta
-        Venta.objects.create(
-            id_cliente=nuevo_cliente,
-            id_simcard=simcard_seleccionada,
-            id_usuario_propietario=self.request.user,
-            monto_total=10.00
-        )
-        
-        return redirect(self.success_url)
-    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
 # Vista para listar las ventas (reportes)
 class ListaVentasView(LoginRequiredMixin, ListView):
     model = Venta
@@ -481,7 +465,7 @@ def obtener_ventas(request, year):
     
     return JsonResponse(response_data)
 
-# Funciones auxiliares Ajax para Las simscards
+
 def get_simcards_by_lote(request):
     """
     Vista que devuelve una lista de SIM Cards disponibles
@@ -490,18 +474,28 @@ def get_simcards_by_lote(request):
     if request.method == 'GET' and 'lote_id' in request.GET:
         try:
             lote_id = request.GET.get('lote_id')
+            # Filtra por lote, excluyendo las que ya están vendidas,
+            # pero permitiendo la de la venta actual si está en la URL.
             simcards = SimCard.objects.filter(id_lote=lote_id).exclude(estado='vendida')
-            
+
+            # Si se está editando una venta, incluye la simcard de la venta actual
+            venta_id = request.GET.get('venta_id')
+            if venta_id:
+                try:
+                    venta = Venta.objects.get(pk=venta_id)
+                    simcards = simcards | SimCard.objects.filter(pk=venta.id_simcard.pk)
+                except Venta.DoesNotExist:
+                    pass
+
             data = [
                 {
-                'id': simcard.id,
-                'codigo': simcard.codigo,
-                'estado': simcard.estado
+                    'id': simcard.id,
+                    'codigo': simcard.codigo,
+                    'estado': simcard.estado
                 }
                 for simcard in simcards
             ]
+            print(data)
             return JsonResponse({'simcards': data})
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
-    
-    return JsonResponse({'error': 'Petición inválida'}, status=400)

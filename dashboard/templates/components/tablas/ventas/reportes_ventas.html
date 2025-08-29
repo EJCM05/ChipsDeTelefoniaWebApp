@@ -1,5 +1,6 @@
 {% load static %}
 {% load crispy_forms_tags %}
+
 {% block content %}
 <div class="container mt-5">
     <div class="container d-flex justify-content-between">
@@ -17,16 +18,15 @@
                     <th>Fecha</th>
                     <th>Cliente</th>
                     <th>Cédula</th>
-                    <th>SIM Card</th>
                     <th>Monto</th>
-                    <th>Usuario</th>
+                    <th>SIM Card</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 {% for venta in ventas %}
                 <tr>
-                    <td>{{ venta.id }}</td>
+                    <td>{{ forloop.counter }}</td>
                     <td>{{ venta.fecha_venta|date:"d/m/Y H:i" }}</td>
                     <td>
                         <a href="{% url 'dashboard:detalle_venta' venta.pk %}">
@@ -34,13 +34,20 @@
                         </a>
                     </td>
                     <td>{{ venta.id_cliente.cedula_identidad }}</td>
-                    <td>{{ venta.id_simcard.codigo }}</td>
                     <td>${{ venta.monto_total|floatformat:2 }}</td>
-                    <td>{{ venta.id_usuario_propietario.username }}</td>
+                    <td>{{ venta.id_simcard.codigo }}</td>
                     <td>
-                        <button  class="btn btn-sm">
-                            <a href="{% url 'dashboard:detalle_venta' venta.pk %}">Ver Detalles</a>
-                        </button>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm">
+                                <a href="{% url 'dashboard:detalle_venta' venta.pk %}" >
+                                    Ver Detalles
+                                </a>
+                            </button>
+                            <button class="btn">
+                                <a href="{% url 'dashboard:editar_venta' venta.pk %}" >
+                                    Editar
+                                </a>
+                            </button>
                     </td>
                 </tr>
                 {% empty %}

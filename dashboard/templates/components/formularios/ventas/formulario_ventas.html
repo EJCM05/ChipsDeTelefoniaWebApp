@@ -7,106 +7,167 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h1 class="card-title text-center">Generar Nueva Venta</h1>
+                <div class="card-header header-color text-white">
+                    {% if form.instance.pk %}
+                        <h1 class="card-title text-center">Editar Venta</h1>
+                    {% else %}
+                        <h1 class="card-title text-center">Generar Nueva Venta</h1>
+                    {% endif %}
                 </div>
                 <div class="card-body">
-                    <form method="post">
-    {% csrf_token %}
-    
-    <div class="row">
-        <div class="col-md-12 mb-4">
-            <h3>Datos del Cliente</h3>
-            <hr>
-        </div>
-        <div class="col-md-6 mb-3">
-            {{ form.primer_nombre|as_crispy_field }}
-        </div>
-        <div class="col-md-6 mb-3">
-            {{ form.segundo_nombre|as_crispy_field }}
-        </div>
-        <div class="col-md-6 mb-3">
-            {{ form.primer_apellido|as_crispy_field }}
-        </div>
-        <div class="col-md-6 mb-3">
-            {{ form.segundo_apellido|as_crispy_field }}
-        </div>
-        <div class="col-md-6 mb-3">
-            {{ form.cedula_identidad|as_crispy_field }}
-        </div>
-        <div class="col-md-6 mb-3">
-            {{ form.fecha_nacimiento|as_crispy_field }}
-        </div>
-        <div class="col-md-6 mb-3">
-            {{ form.telefono|as_crispy_field }}
-        </div>
-        <div class="col-md-6 mb-3">
-            {{ form.correo|as_crispy_field }}
-        </div>
-    </div>
-    
-    <div class="row mt-4">
-        <div class="col-md-12 mb-4">
-            <h3>Selección del Producto</h3>
-            <hr>
-        </div>
-        <div class="col-md-6 mb-3">
-            {{ form.lote|as_crispy_field }}
-        </div>
-        <div class="col-md-6 mb-3">
-            {{ form.simcard|as_crispy_field }}
-        </div>
-    </div>
-    
-    <div class="d-grid gap-2 mt-4">
-        <button type="submit" class="btn btn-primary btn-lg">Procesar Venta</button>
-    </div>
-</form>
+                    <form 
+                        method="post" 
+                        data-venta-id="{{ form.instance.pk|default_if_none:'' }}"
+                        {% if form.instance.pk %}
+                        data-initial-lote-id="{{ form.instance.id_simcard.id_lote.pk }}"
+                        data-initial-simcard-id="{{ form.instance.id_simcard.pk }}"
+                        {% endif %}
+                    >
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="col-md-12 mb-4">
+                                <h3>Datos del Cliente</h3>
+                                <hr>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.primer_nombre|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.segundo_nombre|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.primer_apellido|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.segundo_apellido|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.cedula_identidad|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.fecha_nacimiento|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.telefono|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.correo|as_crispy_field }}
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                {{ form.direccion|as_crispy_field }}
+                            </div>
+                        </div>
+                        
+                        <div class="row mt-4">
+                            <div class="col-md-12 mb-4">
+                                <h3>Selección del Producto</h3>
+                                <hr>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.lote|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {# CAMBIO 1: El ID del campo ForeignKey es 'id_id_simcard' #}
+                                {{ form.id_simcard|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.monto_total|as_crispy_field }}
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 mt-4">
+                            {% if form.instance.pk %}
+                                <button type="submit" class="btn btn-warning btn-lg">Guardar Cambios</button>
+                            {% else %}
+                                <button type="submit" class="btn btn-primary btn-lg">Procesar Venta</button>
+                            {% endif %}
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 <script>
-    let urlAjaxTemplate = "{% url 'dashboard:ajax_load_simcards' %}"
-</script>
-<script>
-        document.addEventListener('DOMContentLoaded', function() {
+    const ajaxUrl = "{% url 'dashboard:ajax_load_simcards' %}";
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // IDs de los elementos select
         const loteSelect = document.getElementById('id_lote');
-        const simcardSelect = document.getElementById('id_simcard');
-        // Generar la URL de Django directamente en el script
-        const ajaxUrl = urlAjaxTemplate;
+        const simcardSelect = document.getElementById('id_id_simcard'); 
+        const formElement = document.querySelector('form');
+        
+        // Obtener los datos iniciales de la venta
+        const ventaId = formElement.dataset.ventaId;
+        const initialLoteId = formElement.dataset.initialLoteId;
+        const initialSimcardId = formElement.dataset.initialSimcardId;
+
+        // Función para cargar las SIMs a través de AJAX
+        const loadSimcards = async (loteId, selectedSimcardId = null) => {
+            console.log('--- Iniciando carga de SIMs ---');
+            simcardSelect.innerHTML = '<option value="">--- Cargando... ---</option>';
+            simcardSelect.disabled = true;
+
+            if (!loteId) {
+                simcardSelect.innerHTML = '<option value="">--- Seleccione una SIM Card ---</option>';
+                return;
+            }
+
+            try {
+                const url = new URL(ajaxUrl, window.location.href);
+                url.searchParams.set('lote_id', loteId);
+
+                // Solo si estamos editando, incluimos el ID de la venta
+                if (ventaId) {
+                    url.searchParams.set('venta_id', ventaId);
+                }
+                
+                console.log('URL de fetch:', url.href);
+                const response = await fetch(url.href);
+                
+                if (!response.ok) {
+                    throw new Error('La respuesta de la red no fue exitosa. Código de estado: ' + response.status);
+                }
+                
+                const data = await response.json();
+                console.log('Datos recibidos:', data);
+
+                simcardSelect.innerHTML = '<option value="">--- Seleccione una SIM Card ---</option>';
+                data.simcards.forEach(simcard => {
+                    const option = document.createElement('option');
+                    option.value = simcard.id;
+                    option.textContent = `${simcard.codigo} | Estado: ${simcard.estado}`;
+                    if (selectedSimcardId && simcard.id == selectedSimcardId) {
+                        option.selected = true;
+                    }
+                    simcardSelect.appendChild(option);
+                });
+
+                simcardSelect.disabled = false;
+                console.log('Carga de SIMs completada.');
+
+            } catch (error) {
+                console.error('Error al cargar las SIM Cards:', error);
+                simcardSelect.innerHTML = '<option value="">--- Error al cargar ---</option>';
+            }
+        };
+
+        // Listener para el cambio de lote
         loteSelect.addEventListener('change', function() {
             const loteId = this.value;
-            
-            simcardSelect.innerHTML = '<option value="">--- Seleccione una SIM Card ---</option>';
-            simcardSelect.disabled = true;
-            
-            if (loteId) {
-                const fetchUrl = `${ajaxUrl}?lote_id=${loteId}`;
-                fetch(fetchUrl)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('La respuesta de la red no fue exitosa');
-                    }
-                    return response.json();
-                    })
-                    .then(data => {
-                        data.simcards.forEach(simcard => {
-                            const option = document.createElement('option');
-                            option.value = `${simcard.id}`;
-                            option.textContent = `${simcard.codigo} | ${simcard.estado}`;
-                            simcardSelect.appendChild(option);
-                        });
-                        simcardSelect.disabled = false;
-                    })
-                    .catch(error => {
-                        console.error('Error al cargar las SIM Cards:', error);
-                        alert('No se pudieron cargar las SIM Cards. Intente de nuevo.');
-                    });
-            }
+            loadSimcards(loteId);
         });
-    });
 
+        // Lógica para precargar la SIM al iniciar en modo de edición
+        if (initialLoteId && initialSimcardId) {
+            console.log('Modo de edición: Precargando SIMs para el Lote #', initialLoteId, ' y SIM #', initialSimcardId);
+            loteSelect.value = initialLoteId;
+            loadSimcards(initialLoteId, initialSimcardId);
+        } else {
+            console.log('Modo de creación: Esperando selección de lote.');
+        }
+    });
 </script>
 {% endblock %}
