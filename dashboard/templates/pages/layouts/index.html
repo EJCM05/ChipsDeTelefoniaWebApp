@@ -234,14 +234,14 @@
                     Ventas
                   </a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                   <a class="nav-link d-flex align-items-center gap-2" href="/admin/">
                     <svg class="bi" aria-hidden="true">
                       <use xlink:href="#people"></use>
                     </svg>
                     Panel
                   </a>
-                </li>
+                </li> -->
                 <li class="nav-item">
                   <a class="nav-link d-flex align-items-center gap-2" href="{% url 'dashboard:dashboard_estadisticas' %}">
                     <svg class="bi" aria-hidden="true">
@@ -309,14 +309,14 @@
               </ul> -->
               <hr class="my-3" />
               <ul class="nav flex-column mb-auto">
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                   <a class="nav-link d-flex align-items-center gap-2" href="{% url 'dashboard:dashboard_perfil' %}">
                     <svg class="bi" aria-hidden="true">
                       <use xlink:href="#gear-wide-connected"></use>
                     </svg>
                     Perfil
                   </a>
-                </li>
+                </li> -->
                 <li class="nav-item">
                   <form method="post" action="{% url 'dashboard:logout' %}">
                   {% csrf_token %}

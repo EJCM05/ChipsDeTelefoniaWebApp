@@ -64,4 +64,6 @@ urlpatterns = [
     # Funciones Auxiliares Ajax
     path('ajax/load-simcards/', get_simcards_by_lote, name='ajax_load_simcards'),
 
+    # Funcion para generar el contrato pdf
+    path('generar-contrato/<int:pk>/', generar_contrato_pdf, name='generar_contrato_pdf'),
 ]

@@ -43,6 +43,10 @@
             </div>
         </div>
         <div class="card-footer text-center">
+            <button class="btn btn-primary w-75 my-3">
+                <a href="{% url 'dashboard:generar_contrato_pdf' venta.id %}" class="text-white">Generar Contrato</a>
+            </button>
+
             <button class="btn w-75">
                 <a href="{% url 'dashboard:dashboard_ventas' %}" >Volver</a>
             </button>
