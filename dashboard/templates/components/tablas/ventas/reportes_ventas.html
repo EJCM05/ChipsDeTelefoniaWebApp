@@ -43,11 +43,16 @@
                                     Ver Detalles
                                 </a>
                             </button>
-                            <button class="btn">
+                            <button class="btn btn-sm">
                                 <a href="{% url 'dashboard:editar_venta' venta.pk %}" >
-                                    Editar
+                                    <i class="bi bi-pencil-fill"></i>
                                 </a>
                             </button>
+                            <button class="btn btn-sm">
+                                <a href="{% url 'dashboard:eliminar_venta' venta.pk %}" >
+                                    <i class="bi bi-trash-fill"></i>
+                                </a>
+                            </button> 
                     </td>
                 </tr>
                 {% empty %}

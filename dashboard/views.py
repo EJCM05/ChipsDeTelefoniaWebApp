@@ -228,6 +228,11 @@ class OperadoraDeleteView(LoginRequiredMixin, DeleteView):
 # ==========================================================================
 
 
+class VentaDeleteView(DeleteView):
+    model = Venta
+    template_name = 'components/confirmaciones/ventas/venta_confirm_delete.html'
+    success_url = reverse_lazy('dashboard:dashboard_ventas')
+    
 class GenerarVentaView(LoginRequiredMixin, CreateView):
     model = Venta
     form_class = VentaForm
@@ -280,7 +285,6 @@ class DetalleVentaView(LoginRequiredMixin, DetailView):
                 # Clase Reportes de ventas
 # ==========================================================================
 
-
 class ListaReportesView(LoginRequiredMixin, ListView):
     model = Venta
     template_name = 'pages/reportes.html'
@@ -302,7 +306,6 @@ class ListaReportesView(LoginRequiredMixin, ListView):
 # # =====================================================
             # Funciones
 # # =====================================================
-
 
 def generar_contrato_pdf(request, pk):
     # 1. Obtener la venta

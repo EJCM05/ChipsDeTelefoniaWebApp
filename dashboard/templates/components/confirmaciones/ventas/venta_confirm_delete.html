@@ -1,0 +1,15 @@
+{% extends 'pages/layouts/index.html' %}
+{% block content %}
+<div class="container mt-5 min-vh-100">
+    <section class="alert alert-danger">
+        <h3>Confirmar Eliminación</h3>
+        <p>¿Estás seguro de que deseas eliminar la venta <strong>#{{ object.pk }}</strong>  del cliente <strong>{{ object.id_cliente.primer_nombre }} {{ object.id_cliente.primer_apellido }}</strong>?</p>
+        
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn">Sí, eliminar</button>
+            <a href="{% url 'dashboard:dashboard_ventas' %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </section>
+</div>
+{% endblock %}

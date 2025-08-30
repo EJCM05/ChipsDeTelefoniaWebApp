@@ -54,6 +54,8 @@ urlpatterns = [
     path('generar-venta/', GenerarVentaView.as_view(), name='generar_venta'),
     path('detalle-venta/<int:pk>/', DetalleVentaView.as_view(), name='detalle_venta'),
     path('editar-venta/<int:pk>/', EditarVentaView.as_view(), name='editar_venta'),
+    path('venta/eliminar/<int:pk>/', VentaDeleteView.as_view(), name='eliminar_venta'),
+
 
     # Funcion para generar excel estadisticas
     path('reporte_lotes/', generar_reporte_lotes_excel, name='reporte_lotes_excel'),
