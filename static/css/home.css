@@ -2,3 +2,34 @@
   width: 100% !important;
   height: auto !important;
 }
+/* Colores personalizados  */
+.header-color {
+  background-color: var(--bs-green) !important;
+}
+button{
+  background-color: var(--bs-green) !important;
+  color: white !important;
+  a{
+    text-decoration: none;
+    color: white;
+  }
+}
+.button-exit{
+  background-color: transparent !important;
+}
+.bg-personalizate-navbar{
+  background-color: var(--bs-green) !important;
+  div{
+    background-color: var(--bs-green) !important;
+    color: white !important;
+    ul{
+      li{
+        a{
+          font-size: 1.4rem;
+          color: white !important;
+        }
+      }
+
+    }
+  }
+}
