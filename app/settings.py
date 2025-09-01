@@ -12,8 +12,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 import os
 from pathlib import Path
-
+import dj_database_url 
 from dotenv import load_dotenv
+import psycopg2
 
 load_dotenv()
 
@@ -64,6 +65,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     "dashboard.reauth_middleware.AdminReauthMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware', 
+
 ]
 
 ROOT_URLCONF = "app.urls"
@@ -90,10 +93,10 @@ WSGI_APPLICATION = "app.wsgi.application"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get("DATABASE_URL", ""),
+        conn_max_age=600
+    )
 }
 
 
@@ -131,12 +134,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
+
 STATIC_URL = "static/"
 
-# Agrega la ruta de la carpeta static de tu proyecto
+# Define una ruta para los archivos estáticos
+# Esta ruta debe existir para que 'collectstatic' funcione
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# Directorios adicionales donde Django buscará archivos estáticos
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
+# El siguiente código solo se ejecuta si NO estamos en modo de desarrollo
+if not DEBUG:
+    # Habilita el backend de almacenamiento de WhiteNoise
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
