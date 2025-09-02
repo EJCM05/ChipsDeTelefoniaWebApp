@@ -74,13 +74,16 @@
                             <div class="col-md-6 mb-3">
                                 {{ form.monto_total|as_crispy_field }}
                             </div>
+                            <div class="col-md-6 mb-3">
+                                    {{ form.numero_telefono_simcard|as_crispy_field }}
+                            </div>
                         </div>
                         
                         <div class="d-grid gap-2 mt-4">
                             {% if form.instance.pk %}
-                                <button type="submit" class="btn btn-warning btn-lg">Guardar Cambios</button>
+                                <button type="submit" class="btn btn-warning btn-lg" id="check-edad">Guardar Cambios</button>
                             {% else %}
-                                <button type="submit" class="btn btn-primary btn-lg">Procesar Venta</button>
+                                <button type="submit" class="btn btn-primary btn-lg" id="check-edad">Procesar Venta</button>
                             {% endif %}
                                     <a class="btn btn-lg btn-secondary" href="{% url  'dashboard:dashboard_ventas' %}">Cancelar</a>
                         </div>
@@ -90,7 +93,7 @@
         </div>
     </div>
 </div>
-
+<script src="{% static 'js/dashboard/check_edad.js' %}"></script>
 <script>
     const ajaxUrl = "{% url 'dashboard:ajax_load_simcards' %}";
 

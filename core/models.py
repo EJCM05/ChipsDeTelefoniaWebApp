@@ -34,8 +34,6 @@ class Usuario(AbstractUser):
 # 2. Operadora
 class Operadora(models.Model):
     nombre_operadora = models.CharField(max_length=20)
-    codigo = models.CharField(max_length=5)
-    pais = models.CharField(max_length=20)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -53,7 +51,7 @@ class Lote(models.Model):
     )
 
     def __str__(self):
-        return self.nombre_lote
+        return f'{self.nombre_lote}'
 
 
 # 4. Clientes

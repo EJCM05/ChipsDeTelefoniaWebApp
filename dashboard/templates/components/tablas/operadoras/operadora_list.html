@@ -10,12 +10,10 @@
     </div>
     {% if operadoras %}
     <div class="table-responsive">
-        <table class="table  table-hover">
+        <table class="table table-hover">
             <thead class="">
                 <tr>
                     <th>Nombre</th>
-                    <th>Código</th>
-                    <th>País</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -23,8 +21,6 @@
                 {% for operadora in operadoras %}
                 <tr>
                     <td>{{ operadora.nombre_operadora }}</td>
-                    <td>{{ operadora.codigo }}</td>
-                    <td>{{ operadora.pais }}</td>
                     <td>
                         <button class="btn btn-sm">
                             <a href="{% url 'dashboard:operadora_update' operadora.pk %}"><i class="bi bi-pencil-square"></i></a>

@@ -9,7 +9,6 @@
           <th>Nombre del Lote</th>
           <th>Máximo de SIMCards</th>
           <th>Fecha de Creación</th>
-          <th>Propietario</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -19,7 +18,6 @@
           <td>{{ lote.nombre_lote }}</td>
           <td>{{ lote.max_simcard }}</td>
           <td>{{ lote.fecha_creacion|date:"d/m/Y" }}</td>
-          <td>{{ lote.id_usuario_propietario.username }}</td>
           <td>
             <button class="btn btn-sm text-white">
               <a href="{% url 'dashboard:simcard_list' lote.pk %}"><i class="bi bi-table"></i></a>

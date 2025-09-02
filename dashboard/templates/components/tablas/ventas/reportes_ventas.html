@@ -28,11 +28,7 @@
                 <tr>
                     <td>{{ forloop.counter }}</td>
                     <td>{{ venta.fecha_venta|date:"d/m/Y H:i" }}</td>
-                    <td>
-                        <a href="{% url 'dashboard:detalle_venta' venta.pk %}">
-                            {{ venta.id_cliente.primer_nombre }} {{ venta.id_cliente.primer_apellido }}
-                        </a>
-                    </td>
+                    <td>{{ venta.id_cliente.primer_nombre }} {{ venta.id_cliente.primer_apellido }}</td>
                     <td>{{ venta.id_cliente.cedula_identidad }}</td>
                     <td>${{ venta.monto_total|floatformat:2 }}</td>
                     <td>{{ venta.id_simcard.codigo }}</td>
