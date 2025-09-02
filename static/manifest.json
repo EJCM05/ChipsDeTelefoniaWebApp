@@ -1,0 +1,16 @@
+{
+  "name": "SimsCard APP",
+  "short_name": "Chips",
+  "description": "Una aplicacion para la administracion de chips de telefonnia.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#198754",
+  "icons": [
+    {
+      "src": "/static/imgs/LogoChipApp.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    }
+  ]
+}

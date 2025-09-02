@@ -22,6 +22,7 @@
     <link href="{% static 'sign-in.css' %}" rel="stylesheet" />
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
     <link rel="stylesheet" href="{% static 'css/mediaqueryshome.css'%}">
+    <link rel="manifest" href="{% static 'manifest.json' %}">
     <style>
       html,
       body {
@@ -152,5 +153,18 @@
       class="astro-vvvwv3sm"
     ></script>
     <script src="{% static 'dist/js/bootstrap.bundle.min.js' %}"></script>
+  <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('{% static "sw.js" %}').then(function(registration) {
+        // Registro exitoso
+        console.log('ServiceWorker registrado con éxito: ', registration.scope);
+      }, function(err) {
+        // Registro fallido
+        console.log('Fallo en el registro del ServiceWorker: ', err);
+      });
+    });
+  }
+</script>
   </body>
 </html>
