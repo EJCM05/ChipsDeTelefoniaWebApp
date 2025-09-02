@@ -1,7 +1,7 @@
 /* Colores personalizados  */
 a{
-  text-decoration: none;
-  color: white;
+  text-decoration: none !important;
+  color: white !important;
 }
 .header-color {
   background-color: var(--bs-green) !important;
