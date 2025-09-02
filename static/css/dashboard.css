@@ -1,4 +1,8 @@
 /* Colores personalizados  */
+a{
+  text-decoration: none;
+  color: white;
+}
 .header-color {
   background-color: var(--bs-green) !important;
 }
