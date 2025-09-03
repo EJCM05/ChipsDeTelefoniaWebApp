@@ -152,3 +152,17 @@ button{
 .bd-mode-toggle .dropdown-menu .active .bi {
   display: block !important;
 }
+
+#global-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(146, 146, 146, 0.459);
+    z-index: 9999;
+}
+
+.loader-hidden {
+    display: none;
+}

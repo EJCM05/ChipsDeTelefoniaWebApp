@@ -27,7 +27,13 @@
         <tr class="text-center">
           <td>{{ forloop.counter }}</td>
           <td>{{ simcard.codigo }}</td>
-          <td>{{ simcard.numero_telefono }}</td>
+          <td>
+            {% if simcard.numero_telefono == None %}
+              Sin Numero Asignado
+            {% else %}
+            {{ simcard.numero_telefono }}
+            {% endif %}
+          </td>
           <td>{{ simcard.get_estado_display }}</td>
           <td>
             {% if simcard.id_cliente == None %}

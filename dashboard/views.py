@@ -312,8 +312,8 @@ def generar_contrato_pdf(request, pk):
     venta = get_object_or_404(Venta, pk=pk)
 
     # 2. Configurar la plantilla y un buffer para el contenido a añadir
-    template_path = os.path.join(settings.BASE_DIR, 'static', 'pdf/Plantilla_Base.pdf')
-    
+    template_path = os.path.join('static/pdf/Plantilla_Base.pdf')
+
     buffer_output = io.BytesIO()
     p = canvas.Canvas(buffer_output)
     
