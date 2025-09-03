@@ -1,49 +1,61 @@
- # Sistema de Gestión de Chips
- 
+![Vista Principal](https://i.postimg.cc/BQFYW8j6/Login.jpg)
 
- Este proyecto es un Sistema de Gestión de Chips diseñado para administrar y rastrear de manera eficiente las tarjetas SIM (chips) para servicios de telefonía.
- 
+# Aplicacion Web Para La Gestion De Sims Cards De Telefonia
 
- ## Características
- 
+> Esta aplicacion funcional y documentada es un sistema web que resuelve el problema 
+> de administracion y venta de simcards de telefonia, la cual tiene como finalidad 
+> agilizar el trabajo, minimizando el tiempo y el desgaste manual en formatos fisicos.
 
- *  Añadir nuevos chips al sistema.
- *  Actualizar la información de los chips existentes.
- *  Eliminar chips del sistema.
- *  Buscar y filtrar chips según diversos criterios (por ejemplo, número de teléfono, estado, proveedor).
- *  Generar informes sobre el uso y la disponibilidad de los chips.
- 
+## Funcionalidades y Características
 
- ## Tecnologías Utilizadas
- 
+Punto 1: Realizacion del CRUD Completo
 
- *  [Especificar el/los lenguaje(s) de programación utilizado(s)]
- *  [Especificar la base de datos utilizada, si la hay]
- *  [Especificar cualquier framework o librerías utilizadas]
- 
+- Operadoras
+- Sims
+- Lotes
+  
+Punto 2: Generar Venta De SimsCards
 
- ## Empezando
- 
+- Generar, eliminar, editar y exportar ventas.
+- Exportacion en formato PDF de planilla de compra o contrato telefonico
+  
+Punto 3: Reportes
 
- 1. Clona el repositorio: `git clone [URL del repositorio]`
- 2. Instala las dependencias: `[Instrucciones sobre cómo instalar las dependencias]`
- 3. Configura la base de datos: `[Instrucciones sobre cómo configurar la base de datos]`
- 4. Ejecuta la aplicación: `[Instrucciones sobre cómo ejecutar la aplicación]`
- 
+- Graficas interactivas
+- Exportaciones en Excel
+  
+Tecnologías Utilizadas: 
+Django, Html, CSS, JS, Postgres, Chart.js, Bootstrap, render.
 
- ## Uso
- 
+### Instalación y Configuración
+```bash
+# Clona el repositorio
+git clone https://github.com/tu-usuario/nombre-del-proyecto.git
 
- [Proporciona ejemplos e instrucciones sobre cómo utilizar el sistema]
- 
+# Entra al directorio
+cd nombre-del-proyecto
 
- ## Contribución
- 
+# Instala las dependencias
+pip install -r requirements.txt
 
- [Explica cómo otros pueden contribuir al proyecto]
- 
+# Ejecuta las migraciones
+python manage.py migrate
 
- ## Licencia
- 
+# Corre el servidor
+python manage.py runserver
+Frontend
+Bash
+```
 
- [Especifica la licencia bajo la cual se publica el proyecto]
+#### Decisión: "Opte por una arquitectura monolitica con (Django) la cual me permitio rapidez, flexibilidad y un desarrollo robusto."
+
+#### Desafío: "El principal desafío fue la modularizacion por componentes, el buen uso de vistas y la fisolofia (DRY)."
+
+#### Recordatorio: usar el archivo .env
+
+---
+### Contacto y Enlaces
+
+Mi portafolio personal: https://EJCM05.github.io
+
+LinkedIn: https://linkedin.com/in/EberColmenares
