@@ -28,6 +28,7 @@ from reportlab.lib.utils import ImageReader
 import tempfile
 import barcode
 from barcode.writer import ImageWriter
+from django.contrib.staticfiles import finders
 
 
 # Funciones encargadas para el renderizado de paginas
@@ -313,13 +314,12 @@ def generar_contrato_pdf(request, pk):
     venta = get_object_or_404(Venta, pk=pk)
 
     # 2. Configurar la plantilla y un buffer para el contenido a añadir
-    template_path = os.path.join(BASE_STATIC_DIR, 'pdf', 'Plantilla_Base.pdf')
+    template_path = finders.find('pdf/Plantilla_Base.pdf')
 
-    # Si por alguna razón el archivo no se encuentra, puedes lanzar una excepción para debugging
-    if not os.path.exists(template_path):
-        # En producción, esto podría ser un buen punto para un log.
-        # En desarrollo, te avisará si la ruta es incorrecta.
-        raise FileNotFoundError(f"El archivo de plantilla PDF no se encuentra en: {template_path}")
+    if not template_path:
+        # Esto te ayudará a diagnosticar si el archivo no se encuentra
+        raise FileNotFoundError("El archivo PDF de plantilla no fue encontrado. "
+                                "Asegúrate de que 'pdf/Plantilla_Base.pdf' exista en tu STATICFILES_DIRS.")
 
     
     buffer_output = io.BytesIO()
