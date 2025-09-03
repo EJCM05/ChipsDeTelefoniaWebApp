@@ -16,7 +16,7 @@ from datetime import date
 from openpyxl.utils import get_column_letter # Importar para obtener la letra de la columna
 from django.http import HttpResponse
 from reportlab.pdfgen import canvas
-from PyPDF2 import PdfReader, PdfWriter
+from pypdf import PdfReader, PdfWriter
 import io
 import os
 from django.conf import settings
