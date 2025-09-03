@@ -26,7 +26,7 @@ from reportlab.lib.colors import white # Para el color blanco
 from PIL import Image
 from reportlab.lib.utils import ImageReader
 import tempfile
-import barcode
+from barcode import Code128 # Importa la clase Code128 directamente
 from barcode.writer import ImageWriter
 from django.contrib.staticfiles import finders
 
@@ -361,7 +361,7 @@ def generar_contrato_pdf(request, pk):
 
         # Generar el código de barras con el código de la SIM
         # Usamos Code128 porque es un formato común y versátil
-        code128 = barcode.get('code128', venta.id_simcard.codigo, writer=ImageWriter())
+        code128 = Code128(venta.id_simcard.codigo, writer=ImageWriter()) # Se utiliza la clase directamente
         
         # Usa un buffer de memoria para la imagen del código de barras
         buffer_barcode = io.BytesIO()
