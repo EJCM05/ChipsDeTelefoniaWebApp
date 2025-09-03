@@ -307,101 +307,106 @@ class ListaReportesView(LoginRequiredMixin, ListView):
 # # =====================================================
             # Funciones
 # # =====================================================
-BASE_STATIC_DIR = os.path.join(settings.BASE_DIR, 'static')
+
 
 def generar_contrato_pdf(request, pk):
-    # 1. Obtener la venta
-    venta = get_object_or_404(Venta, pk=pk)
+    try:
+        # 1. Obtener la venta
+        venta = get_object_or_404(Venta, pk=pk)
 
-    # 2. Configurar la plantilla y un buffer para el contenido a añadir
-    template_path = finders.find('pdf/Plantilla_Base.pdf')
+        # 2. Configurar la plantilla y un buffer para el contenido a añadir
+        template_path = finders.find('pdf/base.pdf')
 
-    if not template_path:
-        # Esto te ayudará a diagnosticar si el archivo no se encuentra
-        raise FileNotFoundError("El archivo PDF de plantilla no fue encontrado. "
-                                "Asegúrate de que 'pdf/Plantilla_Base.pdf' exista en tu STATICFILES_DIRS.")
-
-    
-    buffer_output = io.BytesIO()
-    p = canvas.Canvas(buffer_output)
-    
-    # Función auxiliar para dibujar un rectángulo blanco y luego el texto encima
-    def draw_text_with_white_background(x, y, text, font_name="Helvetica", font_size=10, padding_x=2, padding_y=2):
-        # Establece la fuente para calcular el ancho del texto
-        p.setFont(font_name, font_size)
+        if not template_path:
+            # Si finders.find() no encuentra el archivo, devuelve un 500 con un mensaje útil.
+            # En producción, esto es útil para los logs de error.
+            return HttpResponse("Error 500: El archivo de plantilla PDF no se encuentra en el servidor.", status=500)
         
-        # Calcular el ancho del texto
-        text_width = p.stringWidth(text, font_name, font_size)
+        buffer_output = io.BytesIO()
+        p = canvas.Canvas(buffer_output)
         
-        # Calcular la altura del texto (más preciso)
-        # Una estimación aproximada para la altura de la línea es 1.2 veces el tamaño de la fuente
-        text_height = font_size * 1.2
+        # Función auxiliar para dibujar un rectángulo blanco y luego el texto encima
+        def draw_text_with_white_background(x, y, text, font_name="Helvetica", font_size=10, padding_x=2, padding_y=2):
+            # Establece la fuente para calcular el ancho del texto
+            p.setFont(font_name, font_size)
+            
+            # Calcular el ancho del texto
+            text_width = p.stringWidth(text, font_name, font_size)
+            
+            # Calcular la altura del texto (más preciso)
+            # Una estimación aproximada para la altura de la línea es 1.2 veces el tamaño de la fuente
+            text_height = font_size * 1.2
+            
+            # Dibuja un rectángulo blanco sin borde
+            p.setFillColor(white)
+            p.setStrokeColor(white)
+            p.rect(x - padding_x, y - padding_y, text_width + (2 * padding_x), text_height + (2 * padding_y), stroke=0, fill=1)
+            
+            # Restaura el color del texto a negro y dibuja el texto
+            p.setFillColorRGB(0,0,0)
+            p.drawString(x, y, text)
+
+        # Coordenadas y tamaños de los campos de texto
+        draw_text_with_white_background(445, 720, f"{venta.id_simcard.numero_telefono}", font_size=15)
+        draw_text_with_white_background(30, 632, f"{venta.id_cliente.primer_nombre} {venta.id_cliente.segundo_nombre} {venta.id_cliente.primer_apellido} {venta.id_cliente.segundo_apellido}", font_size=8)
+        draw_text_with_white_background(512, 632, f"V{venta.id_cliente.cedula_identidad}", font_size=10)
+        draw_text_with_white_background(40, 198, f"V{venta.id_cliente.cedula_identidad}", font_size=10)
+        draw_text_with_white_background(165, 198, f"{venta.fecha_venta.strftime('%d/%m/%Y')}", font_size=10)
+        draw_text_with_white_background(37, 603, f"{venta.id_cliente.telefono}", font_size=8)
+        draw_text_with_white_background(37, 575, f"{venta.id_cliente.direccion}", font_size=8)
         
-        # Dibuja un rectángulo blanco sin borde
-        p.setFillColor(white)
-        p.setStrokeColor(white)
-        p.rect(x - padding_x, y - padding_y, text_width + (2 * padding_x), text_height + (2 * padding_y), stroke=0, fill=1)
+        # Coordenadas y tamaño del código de barras
+        barcode_x_coord = 240    # Coordenada X para el código de barras
+        barcode_y_coord = 770     # Coordenada Y para el código de barras (en la parte inferior)
+
+        # Generar el código de barras con el código de la SIM
+        # Usamos Code128 porque es un formato común y versátil
+        code128 = barcode.get('code128', venta.id_simcard.codigo, writer=ImageWriter())
         
-        # Restaura el color del texto a negro y dibuja el texto
-        p.setFillColorRGB(0,0,0)
-        p.drawString(x, y, text)
+        # Usa un buffer de memoria para la imagen del código de barras
+        buffer_barcode = io.BytesIO()
+        code128.write(buffer_barcode)
+        buffer_barcode.seek(0)
+        
+        # Abre el buffer como una imagen de Pillow
+        img_barcode = Image.open(buffer_barcode)
+        
+        # Crea un objeto ImageReader de reportlab a partir de la imagen de Pillow
+        img_reader = ImageReader(img_barcode)
+        
+        # Dibuja la imagen del código de barras en el PDF
+        p.drawImage(img_reader, barcode_x_coord, barcode_y_coord, width=100, height=50)
 
-    # Coordenadas y tamaños de los campos de texto
-    draw_text_with_white_background(445, 720, f"{venta.id_simcard.numero_telefono}", font_size=15)
-    draw_text_with_white_background(30, 632, f"{venta.id_cliente.primer_nombre} {venta.id_cliente.segundo_nombre} {venta.id_cliente.primer_apellido} {venta.id_cliente.segundo_apellido}", font_size=8)
-    draw_text_with_white_background(512, 632, f"V{venta.id_cliente.cedula_identidad}", font_size=10)
-    draw_text_with_white_background(40, 198, f"V{venta.id_cliente.cedula_identidad}", font_size=10)
-    draw_text_with_white_background(165, 198, f"{venta.fecha_venta.strftime('%d/%m/%Y')}", font_size=10)
-    draw_text_with_white_background(37, 603, f"{venta.id_cliente.telefono}", font_size=8)
-    draw_text_with_white_background(37, 575, f"{venta.id_cliente.direccion}", font_size=8)
-    
-    # Coordenadas y tamaño del código de barras
-    barcode_x_coord = 240    # Coordenada X para el código de barras
-    barcode_y_coord = 770     # Coordenada Y para el código de barras (en la parte inferior)
+        p.showPage()
+        p.save()
+        
+        # 4. Combinar el PDF de la plantilla con el PDF de los datos
+        buffer_output.seek(0)
+        
+        existing_pdf = PdfReader(template_path)
+        new_pdf = PdfReader(buffer_output)
+        
+        output = PdfWriter()
+        
+        if len(existing_pdf.pages) > 0:
+            page = existing_pdf.pages[0]
+            page.merge_page(new_pdf.pages[0])
+            output.add_page(page)
+        else:
+            output.add_page(new_pdf.pages[0])
+        
+        # 5. Devolver el PDF combinado
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="contrato_venta_{venta.id_simcard.numero_telefono}.pdf"'
+        
+        output.write(response)
 
-    # Generar el código de barras con el código de la SIM
-    # Usamos Code128 porque es un formato común y versátil
-    code128 = barcode.get('code128', venta.id_simcard.codigo, writer=ImageWriter())
-    
-    # Usa un buffer de memoria para la imagen del código de barras
-    buffer_barcode = io.BytesIO()
-    code128.write(buffer_barcode)
-    buffer_barcode.seek(0)
-    
-    # Abre el buffer como una imagen de Pillow
-    img_barcode = Image.open(buffer_barcode)
-    
-    # Crea un objeto ImageReader de reportlab a partir de la imagen de Pillow
-    img_reader = ImageReader(img_barcode)
-    
-    # Dibuja la imagen del código de barras en el PDF
-    p.drawImage(img_reader, barcode_x_coord, barcode_y_coord, width=100, height=50)
+        return response
+    except Exception as e:
+        # Si ocurre cualquier otro error, este bloque lo capturará
+        # y te dirá exactamente qué está pasando en el log de Render
+        return HttpResponse(f"Error 500: Un error inesperado ha ocurrido. Detalles: {e}", status=500)
 
-    p.showPage()
-    p.save()
-    
-    # 4. Combinar el PDF de la plantilla con el PDF de los datos
-    buffer_output.seek(0)
-    
-    existing_pdf = PdfReader(template_path)
-    new_pdf = PdfReader(buffer_output)
-    
-    output = PdfWriter()
-    
-    if len(existing_pdf.pages) > 0:
-        page = existing_pdf.pages[0]
-        page.merge_page(new_pdf.pages[0])
-        output.add_page(page)
-    else:
-        output.add_page(new_pdf.pages[0])
-    
-    # 5. Devolver el PDF combinado
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="contrato_venta_{venta.id_simcard.numero_telefono}.pdf"'
-    
-    output.write(response)
-
-    return response
 
 # Funcion para generar excel con la muestra de ventas
 def generar_reporte_lotes_excel(request):
