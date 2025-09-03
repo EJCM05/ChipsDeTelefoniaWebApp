@@ -306,14 +306,22 @@ class ListaReportesView(LoginRequiredMixin, ListView):
 # # =====================================================
             # Funciones
 # # =====================================================
+BASE_STATIC_DIR = os.path.join(settings.BASE_DIR, 'static')
 
 def generar_contrato_pdf(request, pk):
     # 1. Obtener la venta
     venta = get_object_or_404(Venta, pk=pk)
 
     # 2. Configurar la plantilla y un buffer para el contenido a añadir
-    template_path = os.path.join('static/pdf/Plantilla_Base.pdf')
+    template_path = os.path.join(BASE_STATIC_DIR, 'pdf', 'Plantilla_Base.pdf')
 
+    # Si por alguna razón el archivo no se encuentra, puedes lanzar una excepción para debugging
+    if not os.path.exists(template_path):
+        # En producción, esto podría ser un buen punto para un log.
+        # En desarrollo, te avisará si la ruta es incorrecta.
+        raise FileNotFoundError(f"El archivo de plantilla PDF no se encuentra en: {template_path}")
+
+    
     buffer_output = io.BytesIO()
     p = canvas.Canvas(buffer_output)
     
