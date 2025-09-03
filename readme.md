@@ -8,24 +8,37 @@
 
 ## Funcionalidades y Características
 
-Punto 1: Realizacion del CRUD Completo
+### Realizacion del CRUD Completo
 
 - Operadoras
 - Sims
 - Lotes
   
-Punto 2: Generar Venta De SimsCards
+### Generar Venta De SimsCards
 
 - Generar, eliminar, editar y exportar ventas.
 - Exportacion en formato PDF de planilla de compra o contrato telefonico
   
-Punto 3: Reportes
+### Reportes
 
 - Graficas interactivas
 - Exportaciones en Excel
+
+### PWA
+
+- Progresive Web App para mejor accesibilidad y rendimietno
   
-Tecnologías Utilizadas: 
-Django, Html, CSS, JS, Postgres, Chart.js, Bootstrap, render.
+### Tecnologías Utilizadas: 
+
+- Django 
+- Html
+- CSS
+- JS
+- Postgres
+- Chart.js
+- Bootstrap
+- Render
+- ServiceWorker
 
 ### Instalación y Configuración
 ```bash
