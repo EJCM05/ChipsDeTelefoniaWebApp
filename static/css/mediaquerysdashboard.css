@@ -1,11 +1,9 @@
 /* Media query for screens smaller than 1200px (laptops/desktops) */
 @media (max-width: 1200px) {
-    /* Add styles here to adjust the layout for smaller screens */
 }
 
 /* Media query for screens smaller than 992px (tablets) */
 @media (max-width: 992px) {
-    /* Add styles here to adjust the layout for tablets */
 }
 
 /* Media query for screens smaller than 768px (phones) */
