@@ -4,21 +4,33 @@ document.addEventListener("DOMContentLoaded", () => {
   // URL del backend obtenida del motor de plantillas de Django.
   const apiUrlTemplate = Obtener_Api_ventas;
 
-  // Inicializar las variables para el contexto y la instancia de la gráfica
+  // Inicializar las variables para el contexto y la instancia de la gráfica.
   const ctx = document.getElementById("myChart");
   let myChart;
   let selectedYear;
 
-  // Configurar el input de tipo 'number' para el año
+  // Obtener referencias al input del año y al loader.
   const yearFilter = document.getElementById("yearFilter");
+  const loader = document.getElementById("global-loader-modal"); // Asume que tienes un elemento con este id en tu HTML.
+
   const currentYear = new Date().getFullYear();
   yearFilter.value = currentYear;
   selectedYear = currentYear;
 
-  // Escuchar cambios en el selector de año
+  /**
+   * Muestra u oculta el loader para indicar que hay una petición en curso.
+   * @param {boolean} show - True para mostrar, false para ocultar.
+   */
+  const toggleLoader = (show) => {
+    if (loader) {
+      loader.style.display = show ? "block" : "none";
+    }
+  };
+
+  // Escuchar cambios en el selector de año.
   yearFilter.addEventListener("change", (e) => {
     selectedYear = parseInt(e.target.value);
-    // Validar que el año es un número válido
+    // Validar que el año es un número válido.
     if (
       !isNaN(selectedYear) &&
       selectedYear >= 2020 &&
@@ -32,10 +44,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Función que realiza la llamada real al backend
+  /**
+   * Función que realiza la llamada real al backend.
+   * @param {number} year - El año para el cual se obtienen los datos.
+   * @returns {Promise<object>} Los datos de ventas.
+   */
   const getVentasData = async (year) => {
-    // Se construye la URL usando el año seleccionado
+    // Se construye la URL usando el año seleccionado.
     const url = apiUrlTemplate.replace("0", year);
+    toggleLoader(true); // Muestra el loader antes de la petición.
+
     try {
       const response = await fetch(url);
       if (!response.ok) {
@@ -45,19 +63,23 @@ document.addEventListener("DOMContentLoaded", () => {
       return data;
     } catch (error) {
       console.error("Error al obtener los datos de ventas:", error);
-      // Si la llamada falla, devuelve datos vacíos para no romper la gráfica
+      // Si la llamada falla, devuelve datos vacíos para no romper la gráfica.
       return {
         labels: [],
         chipsVendidos: [],
         montoTotal: [],
       };
+    } finally {
+      toggleLoader(false); // Oculta el loader, sin importar el resultado.
     }
   };
 
-  // Función para renderizar o actualizar la gráfica con nuevos datos
+  /**
+   * Función para renderizar o actualizar la gráfica con nuevos datos.
+   * @param {number} year - El año para el cual se renderiza la gráfica.
+   */
   const updateChart = async (year) => {
     try {
-      // Obtener los datos del backend para el año seleccionado
       const data = await getVentasData(year);
 
       const meses = [
@@ -97,15 +119,13 @@ document.addEventListener("DOMContentLoaded", () => {
         },
       ];
 
-      // Si la gráfica ya existe, la actualizamos
       if (myChart) {
         myChart.data.labels = meses;
         myChart.data.datasets = datasets;
         myChart.update();
       } else {
-        // Si no existe, la creamos
         myChart = new Chart(ctx, {
-          type: "line", // Cambiado a 'line' para un gráfico de líneas
+          type: "line",
           data: {
             labels: meses,
             datasets: datasets,
@@ -153,6 +173,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // Cargar la gráfica con los datos del año actual al iniciar la página
+  // Cargar la gráfica con los datos del año actual al iniciar la página.
   updateChart(selectedYear);
 });
