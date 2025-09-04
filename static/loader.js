@@ -1,4 +1,5 @@
-  // Variable para contar el número de peticiones activas
+// LOADER GLOBAL
+// Variable para contar el número de peticiones activas
 let activeRequests = 0;
 
 // Referencia al elemento del modal de Bootstrap y su instancia
