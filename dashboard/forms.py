@@ -69,13 +69,22 @@ class SimCardForm(forms.ModelForm):
         # Ahora la clase base ya no verá 'lote_pk' y no dará error
         super().__init__(*args, **kwargs)
         
+        # Obtenemos las opciones de estado del modelo
+        estado_choices = list(SimCard.ESTADO_CHOICES)
+        
+        # Filtramos la opción "vendida"
+        estado_choices_filtradas = [choice for choice in estado_choices if choice[0] != 'vendida']
+        
+        # Asignamos las opciones filtradas al campo 'estado'
+        self.fields['estado'].choices = estado_choices_filtradas
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.layout = Layout(
             Field('codigo'),
             Field('estado'),
             Field('id_operadora'),
-        )        
+        )
+
 # =====================================================
 #           formulario para crear operadoras        
 # ==================================================

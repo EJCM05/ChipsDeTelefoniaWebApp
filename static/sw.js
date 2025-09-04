@@ -2,7 +2,7 @@
 const CACHE_NAME = 'App-Chips-v1-no-cache';
 
 self.addEventListener('install', event => {
-  console.log('Service Worker instalado. No se están cacheando archivos.');
+  console.info('SWACTIVATE');
   // No hay un evento `waitUntil` para cachear activos.
 });
 
@@ -14,7 +14,7 @@ self.addEventListener('fetch', event => {
 
 // Opcional: Puedes agregar una lógica para limpiar cachés antiguos en la activación.
 self.addEventListener('activate', event => {
-  console.log('Service Worker activado.');
+  console.info('SWACTIVATE.');
   // Lógica para limpiar cachés antiguos, si decides implementarlo en el futuro.
   event.waitUntil(
     caches.keys().then(cacheNames => {
